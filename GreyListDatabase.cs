@@ -109,8 +109,10 @@ namespace GreyListAgent
                 }
                 // Loop through the section of ourselves, get a list of keys to remove, then remove them
                 GreyListEntry temp;
-                List<int> indexesToClean = new List<int>();
+                List<string> indexesToClean = new List<string>();
                 DateTime now = DateTime.UtcNow;
+                object[] keys = new object[this.Keys.Count];
+                this.Keys.CopyTo(keys, 0);
                 for(; this.lastCleanIndex < lastIndex; this.lastCleanIndex++)
                 {
                     temp = (GreyListEntry)this[this.lastCleanIndex];
@@ -119,20 +121,19 @@ namespace GreyListAgent
                         // Test against the confirmed timeout
                         if (now.Subtract(temp.FirstSeen) > ConfirmedMaxAge)
                         {
-                            indexesToClean.Add(this.lastCleanIndex);
+                            indexesToClean.Add((String)keys[this.lastCleanIndex);
                         }
                         continue;
                     }
                     // Test against the unconfirmed timeout
                     if (now.Subtract(temp.FirstSeen) > UnconfirmedMaxAge)
                     {
-                        indexesToClean.Add(this.lastCleanIndex);
+                        indexesToClean.Add((String)keys[this.lastCleanIndex);
                     }
-                    continue;
                 }
                 for (int i = 0; i < indexesToClean.Count; i++)
                 {
-                    this.RemoveAt(indexesToClean[i]);
+                    this.Remove(indexesToClean[i]);
                 }
 
             }
