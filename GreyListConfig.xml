@@ -1,0 +1,7 @@
+<?xml version="1.0" ?> 
+<GreyListConfig>
+	<CleanRowCount> 100 </CleanRowCount>
+	<GreylistingPeriod> 00:05:00 </GreylistingPeriod>
+	<ConfirmedMaxAge> 30.00:00:00 </ConfirmedMaxAge>
+	<UnconfirmedMaxAge> 06:00:00 </UnconfirmedMaxAge>
+</GreyListConfig>
