@@ -121,14 +121,14 @@ namespace GreyListAgent
                         // Test against the confirmed timeout
                         if (now.Subtract(temp.FirstSeen) > ConfirmedMaxAge)
                         {
-                            indexesToClean.Add((String)keys[this.lastCleanIndex);
+                            indexesToClean.Add((String)keys[this.lastCleanIndex]);
                         }
                         continue;
                     }
                     // Test against the unconfirmed timeout
                     if (now.Subtract(temp.FirstSeen) > UnconfirmedMaxAge)
                     {
-                        indexesToClean.Add((String)keys[this.lastCleanIndex);
+                        indexesToClean.Add((String)keys[this.lastCleanIndex]);
                     }
                 }
                 for (int i = 0; i < indexesToClean.Count; i++)
