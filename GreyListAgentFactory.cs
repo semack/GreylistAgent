@@ -30,6 +30,11 @@ namespace GreyListAgent
         private const string DatabaseFile = "GreyListDatabase.xml";
 
         /// <summary>
+        /// Log filename for logging
+        /// </summary>
+        private const string LogFile = "GreyListLog.txt";
+
+        /// <summary>
         /// Crypto hash manager
         /// </summary>
         private SHA256Managed hashManager = new SHA256Managed();
@@ -85,7 +90,8 @@ namespace GreyListAgent
                                      this.greylistSettings,
                                      this.greylistDatabase,
                                      this.hashManager,
-                                     server);
+                                     server,
+                                     Path.Combine(this.dataPath, LogFile));
         }
     }
 }

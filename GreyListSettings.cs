@@ -5,28 +5,18 @@ namespace GreyListAgent
     using System.IO;
     using System.Text;
     using System.Xml;
+    using System.Collections.Generic;
 
     public class GreyListSettings
     {
-        /// <summary>
-        /// The maximum age of an confirmed entry.
-        /// </summary>
         private TimeSpan confirmedMaxAge;
-
-        /// <summary>
-        /// The maximum age of an unconfirmed entry.
-        /// </summary>
         private TimeSpan unconfirmedMaxAge;
-
-        /// <summary>
-        /// Period of minimum time for a greylisting
-        /// </summary>
         private TimeSpan greylistingPeriod;
-
-        /// <summary>
-        /// The number of rows to be cleaned each pass
-        /// </summary>
         private int cleanRowCount;
+        private List<string> whitelistClients;
+        private List<string> whitelistIPs;
+        private int ipNetmask;
+        private int logLevel;
 
         /// <summary>
         /// An empty constructor initializes with default values.
@@ -34,20 +24,31 @@ namespace GreyListAgent
         /// <param name="path">The path to an XML file that contains the settings.</param>
         public GreyListSettings(string path)
         {
-            // 30 days
+            // Default of 30 days
             this.confirmedMaxAge = new TimeSpan(30, 0, 0, 0);
 
-            // 4 hours
+            // Default of 4 hours
             this.unconfirmedMaxAge = new TimeSpan(0, 4, 0, 0);
 
-            // 5 minutes.
+            // Defaut of 5 minutes
             this.greylistingPeriod = new TimeSpan(0, 0, 5, 0);
 
-            // Default cleaning row count.
-            this.CleanRowCount = 100;
+            // Default of 100 rows per pass
+            this.cleanRowCount = 100;
 
-            // Read nondefault settings from file.
+            // Default of a /24 or 255.255.255.0 when hashing
+            this.ipNetmask = 24;
+
+            // Default empty whitelists
+            this.whitelistClients = new List<string>();
+            this.whitelistIPs = new List<string>();
+
+            // Default log actions only
+            this.logLevel = 2;
+
+            // Read configured options
             this.ReadXMLConfig(path);
+ 
         }
 
         public GreyListSettings(GreyListSettings other)
@@ -56,8 +57,15 @@ namespace GreyListAgent
             this.UnconfirmedMaxAge = other.UnconfirmedMaxAge;
             this.GreylistingPeriod = other.GreylistingPeriod;
             this.CleanRowCount = other.CleanRowCount;
+            this.IpNetmask = other.IpNetmask;
+            this.WhitelistClients = other.WhitelistClients;
+            this.WhitelistIPs = other.WhitelistIPs;
+            this.LogLevel = other.LogLevel;
         }
 
+        /// <summary>
+        /// Maximum age of confirmed triplets before requring re-confirmation and getting cleaned up.
+        /// </summary>
         public TimeSpan ConfirmedMaxAge
         {
             get { return this.confirmedMaxAge; }
@@ -65,6 +73,9 @@ namespace GreyListAgent
             set { this.confirmedMaxAge = value; }
         }
 
+        /// <summary>
+        /// Maximum age of unconfirmed triplets before getting cleaned up.
+        /// </summary>
         public TimeSpan UnconfirmedMaxAge
         {
             get { return this.unconfirmedMaxAge; }
@@ -72,6 +83,9 @@ namespace GreyListAgent
             set { this.unconfirmedMaxAge = value; }
         }
 
+        /// <summary>
+        /// Period of time a triplet is greylisted 
+        /// </summary>
         public TimeSpan GreylistingPeriod
         {
             get { return this.greylistingPeriod; }
@@ -79,12 +93,59 @@ namespace GreyListAgent
             set { this.greylistingPeriod = value; }
         }
 
-       
+        /// <summary>
+        /// Log Levels
+        /// 0 = No Logging
+        /// 1 = Errors only
+        /// 2 = 1 + Actions
+        /// 2 = 2 + Information (More information)
+        /// 3 = 3 + Debug (Very chatty)
+        /// </summary>
+        public int LogLevel
+        {
+            get { return this.logLevel; }
+
+            set { this.logLevel = value; }
+        }
+
+        /// <summary>
+        /// Number of rows to clean on each recieve 
+        /// </summary>
         public int CleanRowCount
         {
             get { return this.cleanRowCount; }
 
             set { this.cleanRowCount = value; }
+        }
+
+        /// <summary>
+        /// IP Netmask to apply to source IPs when hashing triplets
+        /// </summary>
+        public int IpNetmask
+        {
+            get { return this.ipNetmask; }
+
+            set { this.ipNetmask = value; }
+        }
+
+        /// <summary>
+        /// List of IPs to whitelist (Can contain a subnet mask or CIDR)
+        /// </summary>
+        public List<string> WhitelistIPs
+        {
+            get { return this.whitelistIPs; }
+            set { this.whitelistIPs = value; }
+        }
+
+        /// <summary>
+        /// List of rDNS records for clients (sending servers) to whitelist.
+        /// Regex is acceptable (must be encased in starting and ending slashes)
+        /// Non-Regex matches attempt a literal match and a wildcard subdomain match
+        /// </summary>
+        public List<string> WhitelistClients
+        {
+            get { return this.whitelistClients; }
+            set { this.whitelistClients = value; }
         }
        
         #region XML File Parsing
@@ -106,6 +167,7 @@ namespace GreyListAgent
                 // Some temp variables that will be used during validation.
                 int fileInt = 0;
                 TimeSpan fileTime = new TimeSpan();
+                List<string> fileStrings = new List<string>();
 
                 // Load the file into the XML reader.
                 XmlDocument xmlDoc = new XmlDocument();
@@ -118,6 +180,20 @@ namespace GreyListAgent
                 if (fileInt > 0)
                 {
                     this.cleanRowCount = fileInt;
+                }
+
+                // Read in the IP netmask
+                fileInt = this.ReadXmlInt(xmlRoot, "IpNetmask");
+                if (fileInt > 0)
+                {
+                    this.ipNetmask = fileInt;
+                }
+
+                // Read in the Log Level
+                fileInt = this.ReadXmlInt(xmlRoot, "LogLevel");
+                if (fileInt != 2)
+                {
+                    this.logLevel = fileInt;
                 }
 
                 // Read in the initial blocking period.
@@ -140,6 +216,21 @@ namespace GreyListAgent
                 {
                     this.unconfirmedMaxAge = fileTime;
                 }
+
+                // Read whitelisted IPs
+                fileStrings = this.ReadXmlStringList(xmlRoot, "WhitelistIPs");
+                if (fileStrings.Count > 0)
+                {
+                    this.whitelistIPs = fileStrings;
+                }
+
+                // Read whitelisted clients
+                fileStrings = this.ReadXmlStringList(xmlRoot, "WhitelistClients");
+                if (fileStrings.Count > 0)
+                {
+                    this.whitelistClients = fileStrings;
+                }
+
             }
             catch (XmlException e)
             {
@@ -155,6 +246,30 @@ namespace GreyListAgent
             {
                 Debug.WriteLine(e.ToString());
                 return false;
+            }
+            return retval;
+        }
+
+        /// <summary>
+        /// Reads a list of strings based on the element name and return them
+        /// </summary>
+        /// <param name="root">The root element to start searching from.</param>
+        /// <param name="xmlParam">The name of the element to get the value list of.</param>
+        /// <returns>A list of strings.</returns>
+        private List<String> ReadXmlStringList(XmlNode root, string xmlParam)
+        {
+            List<String> retval = new List<string>();
+
+            if (root != null && xmlParam != null)
+            {
+                XmlNode valNode = root.SelectSingleNode(xmlParam);
+                if (valNode != null)
+                {
+                    foreach (XmlNode childNode in valNode.ChildNodes)
+                    {
+                        retval.Add(childNode.InnerText.Trim());
+                    }
+                }
             }
             return retval;
         }

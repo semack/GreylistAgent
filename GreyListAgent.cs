@@ -5,11 +5,15 @@ namespace GreyListAgent
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
+    using System.IO;
 
     using Microsoft.Exchange.Data;
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
     using Microsoft.Exchange.Data.Mime;
+    using System.Text.RegularExpressions;
+    using System.Globalization;
+    using System.Threading;
 
 
     /// <summary>
@@ -24,7 +28,7 @@ namespace GreyListAgent
         private static readonly SmtpResponse DelayResponseMessage = new SmtpResponse(
                         "451",
                         "4.7.1",
-                        "Greylisted. Try again Later.");
+                        "Greylisted. Try again later.");
 
         /// <summary>
         /// An instantiation of a class that can be used to convert
@@ -50,24 +54,6 @@ namespace GreyListAgent
         private bool testOnEndOfHeaders;
 
         /// <summary>
-        /// The IP address of the sending SMTP host as
-        /// recorded in the SMTP envelope.
-        /// </summary>
-        private IPAddress senderIP;
-
-        /// <summary>
-        /// The email address of the message sender as
-        /// recorded in the SMTP envelope.
-        /// </summary>
-        private RoutingAddress senderAddress;
-
-        /// <summary>
-        /// The email address of the message recipient as
-        /// recorded in the SMTP envelope.
-        /// </summary> 
-        private RoutingAddress recipientAddress;
-
-        /// <summary>
         /// The database of verified entries.
         /// </summary>
         private GreyListDatabase greylistDatabase;
@@ -78,12 +64,19 @@ namespace GreyListAgent
         /// </summary>
         private SHA256Managed hashManager;
 
-       
-        public GreyListAgent(
-                             GreyListSettings settings,
-                             GreyListDatabase greylistDatabase,
-                             SHA256Managed hashManager,
-                             SmtpServer server)
+        /// <summary>
+        /// Path to log file
+        /// </summary>
+        private String logPath;
+
+        /// <summary>
+        /// Initializes a Greylist agent for use
+        /// </summary>
+        /// <param name="settings">Settings object with populated settings</param>
+        /// <param name="greylistDatabase">Greylist database to use for triplet management</param>
+        /// <param name="hashManager">hash manager</param>
+        /// <param name="server">Exchange server instance</param>
+        public GreyListAgent(GreyListSettings settings, GreyListDatabase greylistDatabase, SHA256Managed hashManager, SmtpServer server, String logPath)
         {
             // Initialize instance variables.
             this.settings = settings;
@@ -91,6 +84,7 @@ namespace GreyListAgent
             this.greylistDatabase = greylistDatabase;
             this.testOnEndOfHeaders = false;
             this.hashManager = hashManager;
+            this.logPath = logPath;
 
             // Set up the hooks to have your functions called when certain events occur.
             this.OnRcptCommand += new RcptCommandEventHandler(this.OnRcptCommandHandler);
@@ -102,53 +96,57 @@ namespace GreyListAgent
             // Check the parameter values.
             if (source == null || rcptArgs == null)
             {
+                this.logLine("ERROR: Source or Recipient Argements was null", 1);
                 return;
             }
 
             // Skip filtering for internal mail.
             if (!rcptArgs.SmtpSession.IsExternalConnection)
             {
+                
+                if (rcptArgs.RecipientAddress.ToString().IndexOf("HealthMailbox") == 0)
+                {
+                    return;
+                }
+                this.logLine("FROM=, TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Bypassed, REASON=Internal Connection", 2);
                 return;
             }
 
-            // Retrieve data used to identify this message.
-            this.senderAddress = rcptArgs.MailItem.FromAddress;
-            this.senderIP = rcptArgs.SmtpSession.RemoteEndPoint.Address;
-            this.recipientAddress = rcptArgs.RecipientAddress;
-
             // If the sender domain is null, you will have to wait until
             // after the EndOfData event to check the message.
-            if (RoutingAddress.NullReversePath.Equals(this.senderAddress))
+            if (RoutingAddress.NullReversePath.Equals(rcptArgs.MailItem.FromAddress))
             {
                 this.testOnEndOfHeaders = true;
                 return;
             }
 
-            // Skip temporary blocking for safe senders.
-            if (this.ShouldBypassFilter(this.senderAddress, this.recipientAddress, this.server))
+            // Check to see if whitelisted or in safe senders list
+            if (this.ShouldBypassFilter(rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address))
             {
+                this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Bypassed, REASON=Filter Bypass Match", 2);
                 return;
             }
 
             // Check the database to determine whether the message should be rejected 
             // or let through.
-            if (!this.VerifyTriplet(this.senderIP, this.senderAddress, this.recipientAddress))
+            if (!this.VerifyTriplet(rcptArgs.SmtpSession.RemoteEndPoint.Address, rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress))
             {
+                this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=Triplet verification Fail", 2);
                 source.RejectCommand(DelayResponseMessage);
+                return;
             }
-
+            this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Accept, REASON=Triplet Match.", 2);
+                
             // Finally, check a few rows
             // for expired entries that need to be cleaned up.
-            this.greylistDatabase.Clean(
-                                                   this.settings.CleanRowCount,
-                                                   this.settings.ConfirmedMaxAge,
-                                                   this.settings.UnconfirmedMaxAge);
+            this.greylistDatabase.Clean(this.settings.CleanRowCount, this.settings.ConfirmedMaxAge, this.settings.UnconfirmedMaxAge);
         }
         
         public void OnEndOfHeaderHandler(ReceiveMessageEventSource source, EndOfHeadersEventArgs eodArgs)
         {
             if (this.testOnEndOfHeaders)
             {
+                RoutingAddress senderAddress;
                 // Reset the flag.
                 this.testOnEndOfHeaders = false;
 
@@ -156,10 +154,11 @@ namespace GreyListAgent
                 Header fromAddress = eodArgs.Headers.FindFirst(HeaderId.From);
                 if (fromAddress != null)
                 {
-                    this.senderAddress = new RoutingAddress(fromAddress.Value);
+                    senderAddress = new RoutingAddress(fromAddress.Value);
                 }
                 else
                 {
+                    this.logLine("FROM=, TO=Multiple, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=No from address.", 2);                
                     // No sender address, reject the message.
                     source.RejectMessage(DelayResponseMessage);
                     return;
@@ -169,27 +168,33 @@ namespace GreyListAgent
                 bool rejectAll = false;
                 foreach (EnvelopeRecipient currentRecipient in eodArgs.MailItem.Recipients)
                 {
-                    if (!this.ShouldBypassFilter(this.senderAddress, currentRecipient.Address, this.server) &&
-                        !this.VerifyTriplet(this.senderIP, this.senderAddress, currentRecipient.Address))
+                    if (this.ShouldBypassFilter(senderAddress, currentRecipient.Address, eodArgs.SmtpSession.RemoteEndPoint.Address))
                     {
+                        continue;
+                    }
+                    if (!this.VerifyTriplet(eodArgs.SmtpSession.RemoteEndPoint.Address, senderAddress, currentRecipient.Address))
+                    {
+                        this.logLine("FROM="+senderAddress.ToString()+", TO="+currentRecipient.Address.ToString()+", REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=Triplet verify failed.", 2);  
                         rejectAll = true;
                     }
                 }
 
                 if (rejectAll)
                 {
+                    this.logLine("FROM=" + senderAddress.ToString() + ", TO=MANY, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=One or more recipients failed Triplet verification.", 2);                
                     source.RejectMessage(DelayResponseMessage);
+                    return;
                 }
+                this.logLine("FROM=" + senderAddress.ToString() + ", TO=MANY, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Accept, REASON=Triplets Match.", 2);                
+                    
             }
         }
         
 
         private bool VerifyTriplet(IPAddress remoteIP, RoutingAddress sender, RoutingAddress recipient)
         {
-            String tripletHash = this.HashTriplet(
-                                                  remoteIP,
-                                                  sender.DomainPart,
-                                                  recipient.ToString());
+
+            String tripletHash = this.HashTriplet(remoteIP, sender.DomainPart, recipient.ToString());
 
             // Check to see if we are already aware of this hash
             if (this.greylistDatabase.Contains(tripletHash))
@@ -198,8 +203,9 @@ namespace GreyListAgent
                 if (((GreyListEntry)this.greylistDatabase[tripletHash]).Confirmed)
                 {
                     // Update the last seen
+                    ((GreyListEntry)this.greylistDatabase[tripletHash]).Count += 1;
                     ((GreyListEntry)this.greylistDatabase[tripletHash]).LastSeen = DateTime.UtcNow;
-
+                    
                     // Go ahead and return true
                     return true;
                 }
@@ -222,40 +228,108 @@ namespace GreyListAgent
 
         }
 
-        private bool ShouldBypassFilter(RoutingAddress sender, RoutingAddress recipient, SmtpServer server)
+        private bool ShouldBypassFilter(RoutingAddress sender, RoutingAddress recipient, IPAddress senderIP)
         {
-            if (server == null || sender == null || recipient == null)
+            if (this.server == null || sender == null || recipient == null)
             {
                 return false;
             }
-
-            AddressBook addressBook = server.AddressBook;
+            
+            
+            // Check Exchange bypasses
+            AddressBook addressBook = this.server.AddressBook;
             if (addressBook != null)
             {
                 AddressBookEntry addressBookEntry = addressBook.Find(recipient);
                 if (addressBookEntry != null)
                 {
-                    if (addressBookEntry.AntispamBypass ||
-                        addressBookEntry.IsSafeSender(sender) ||
-                        addressBookEntry.IsSafeRecipient(recipient))
+                    if (addressBookEntry.AntispamBypass || addressBookEntry.IsSafeSender(sender) || addressBookEntry.IsSafeRecipient(recipient))
                     {
                         return true;
                     }
                 }
             }
 
+            // IPs (Can have netmask)
+            foreach (String ip in this.settings.WhitelistIPs)
+            {
+                try
+                {
+                    IPAddressRange range = IPAddressRange.Parse(ip);
+                    if (range.Contains(senderIP))
+                    {
+                        return true;
+                    }
+                }
+                catch
+                {
+                    // Do Nothing
+                }
+            }
+
+            // Do a reverse DNS lookup on the IP
+            try
+            {
+                IPHostEntry hostInfo = Dns.GetHostEntry(senderIP);
+                string reversedHostname = Reverse(hostInfo.HostName);
+                foreach (String domain in this.settings.WhitelistClients)
+                {
+                    // Test for regex
+                    if (domain.IndexOf('/') == 0)
+                    {
+                        try
+                        {
+                            Regex domaintest = new Regex(domain);
+                            if (domaintest.IsMatch(hostInfo.HostName)) {
+                                return true;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                        continue;
+                    }
+
+                    // Test for a literal match
+                    if (hostInfo.HostName == domain)
+                    {
+                        return true;
+                    }
+
+                    // Test for any subdomain match
+                    string reversed = Reverse("."+domain);
+                    if (reversedHostname.IndexOf(reversed) == 0) {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                // Do nothing
+            }
+
             return false;
         }
 
-        private string HashTriplet(IPAddress senderIP, string senderDomain, string rcptAddress)
+        private string HashTriplet(IPAddress senderIP, String senderDomain, String rcptAddress)
         {
             // A string that will contain an ASCII value of the triplet.
-            string tripletString = String.Empty;
+            String tripletString = String.Empty;
 
             // Append the IP address onto the triplet string.
             if (senderIP != null)
             {
-                tripletString = string.Concat(tripletString, senderIP.ToString());
+                // Apply a netmask to any incoming IPs
+                try 
+                {
+
+                    tripletString = string.Concat(tripletString, IPAddressRange.Parse(senderIP.ToString() + "/" + this.settings.IpNetmask.ToString()).Begin.ToString());
+                }
+                catch
+                {
+                    tripletString = string.Concat(tripletString, senderIP.ToString());
+                }
             }
 
             // Append the recipient's address onto the triplet string.
@@ -271,14 +345,17 @@ namespace GreyListAgent
             }
 
             // Convert the string to lowercase and get its value as a byte[].
-            byte[] hashInput = asciiEncoding.GetBytes(tripletString.ToLowerInvariant());
+            Byte[] hashInput = asciiEncoding.GetBytes(tripletString.ToLowerInvariant());
 
             // Calculate the SHA256 hash.
-            byte[] hashResult;
+            Byte[] hashResult;
+
+            // Lock the hash manager for usage
             lock (this.hashManager)
             {
                 hashResult = this.hashManager.ComputeHash(hashInput);
             }
+
             StringBuilder sBuilder = new StringBuilder();
 
             // Loop through each byte of the hashed data 
@@ -295,6 +372,45 @@ namespace GreyListAgent
         public bool TestVerify(IPAddress senderIP, RoutingAddress sender, RoutingAddress recipient)
         {
             return this.VerifyTriplet(senderIP, sender, recipient);
+        }
+
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        private void logLine(string message, int level)
+        {
+            // Don't log it if we dont want it
+            if (level > this.settings.LogLevel)
+            {
+                return;
+            }
+
+            // 10 tries 100ms apart
+            int tries = 10;
+            while (tries > 0)
+            {
+                try
+                {
+                    if (!File.Exists(this.logPath))
+                    {
+                        File.CreateText(this.logPath).Close();
+                    }
+                    StreamWriter log = File.AppendText(this.logPath);
+                    log.WriteLine("[" + DateTime.Now.ToString("g", DateTimeFormatInfo.InvariantInfo) + "] " + message);
+                    log.Close();
+                    tries = 0;
+                }
+                catch
+                {
+                    tries -= 1;
+                    Thread.Sleep(100);
+                }
+            }
+
         }
     }
 }

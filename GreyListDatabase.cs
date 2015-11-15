@@ -13,8 +13,16 @@ namespace GreyListAgent
     [XmlRoot("GreyListDatabase")]
     public class GreyListDatabase : OrderedDictionary, IXmlSerializable
     {
+        /// <summary>
+        /// Last index that was cleaned
+        /// </summary>
         private int lastCleanIndex = 0;
 
+        /// <summary>
+        /// Loads
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>loaded database or empty database if it can't load the database</returns>
         public static GreyListDatabase Load(String path)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(GreyListDatabase));
@@ -44,6 +52,10 @@ namespace GreyListAgent
             return db;
         }
 
+        /// <summary>
+        /// Saves the database to specified path
+        /// </summary>
+        /// <param name="path">Path to save the database to</param>
         public void Save(String path)
         {
             try
@@ -80,6 +92,13 @@ namespace GreyListAgent
             }
         }
 
+        /// <summary>
+        /// Cleans the database. Examines CleanRowCount rows at a time. Removes unconfirmed entries older than
+        /// UnconfirmedMaxAge and removes confirmed entries older than ConfirmedMaxAge
+        /// </summary>
+        /// <param name="CleanRowCount">Number of rows to clean per call</param>
+        /// <param name="ConfirmedMaxAge">Maximum age of confirmed entries</param>
+        /// <param name="UnconfirmedMaxAge">Maximum age of uconfirmed entries</param>
         public void Clean(int CleanRowCount, TimeSpan ConfirmedMaxAge, TimeSpan UnconfirmedMaxAge)
         {
             lock (((IOrderedDictionary)this).SyncRoot)
@@ -140,11 +159,19 @@ namespace GreyListAgent
 
         }
 
+        /// <summary>
+        /// Schema overload
+        /// </summary>
+        /// <returns>Null</returns>
         public System.Xml.Schema.XmlSchema GetSchema()
         {
             return null;
         }
 
+        /// <summary>
+        /// XMLReader overload for reading saved serialized XML files
+        /// </summary>
+        /// <param name="reader">XMLReader provided for deserializing</param>
         public void ReadXml(System.Xml.XmlReader reader)
         {
             XmlSerializer keySerializer = new XmlSerializer(typeof(String));
@@ -168,6 +195,11 @@ namespace GreyListAgent
             }
             reader.ReadEndElement();
         }
+
+        /// <summary>
+        /// XMLWriter overload for writing serialized objects
+        /// </summary>
+        /// <param name="writer">XMLWriter for serializing objects</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
             XmlSerializer keySerializer = new XmlSerializer(typeof(String));
