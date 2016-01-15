@@ -12,8 +12,8 @@ Once a server re-tries the same email a second time, it will be added to the lis
 
 Features
 -----
-1. Configuratble clean up intervals for confirmed and unconfirmed entries
-2. Configuratble netmask application to deal with most mail clusters automatically
+1. Configurable clean up intervals for confirmed and unconfirmed entries
+2. Configurable netmask application to deal with most mail clusters automatically
 3. Whitelisting via rDNS (client) and IP address
 4. Logging transactions for debugging purposes
 
