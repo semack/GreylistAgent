@@ -3,11 +3,9 @@ namespace GreyListAgent
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Collections;
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Xml.Serialization;
 
     [XmlRoot("GreyListDatabase")]

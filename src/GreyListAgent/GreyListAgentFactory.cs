@@ -1,14 +1,8 @@
 namespace GreyListAgent
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
-    using System.Net;
     using System.Reflection;
     using System.Security.Cryptography;
-
-    using Microsoft.Exchange.Data;
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
 

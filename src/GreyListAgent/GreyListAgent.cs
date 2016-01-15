@@ -1,20 +1,17 @@
 namespace GreyListAgent
 {
     using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
     using System.IO;
-
-    using Microsoft.Exchange.Data;
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
     using Microsoft.Exchange.Data.Mime;
     using System.Text.RegularExpressions;
     using System.Globalization;
     using System.Threading;
-
+    using NetTools;
 
     /// <summary>
     /// Agent for Greylisting
