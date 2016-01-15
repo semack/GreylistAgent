@@ -1,4 +1,4 @@
-GreyListAgent [![Build Status](https://travis-ci.org/semack/GreylistAgent.png?branch=master)](https://travis-ci.org/semack/GreylistAgent)
+GreyListAgent [![Build Status](https://travis-ci.org/jmdevince/GreylistAgent.png?branch=master)](https://travis-ci.org/jmdevince/GreylistAgent)
 ==================
 
 > To work correctly you must build the solution with references to 
