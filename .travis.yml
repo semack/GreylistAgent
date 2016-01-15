@@ -13,7 +13,8 @@ env:
 git:
   submodules: false
 
-solution: src/GreListAgent.sln
+solution: src/GreyListAgent.sln
+
 
 script:
-  - xbuild /p:Configuration=Release src/GreListAgent.sln
+  - xbuild /p:Configuration=Release src/GreyListAgent.sln
