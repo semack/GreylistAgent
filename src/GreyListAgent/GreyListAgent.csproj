@@ -107,7 +107,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2013SP1CU5|AnyCPU' ">
-    <OutputPath>bin\EX2013SP1CU5\</OutputPath>
+    <OutputPath>bin\2013SP1CU5\</OutputPath>
     <DefineConstants>TRACE;DEBUG;EX2013SP1CU5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -131,7 +131,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2013SP1CU8|AnyCPU' ">
-    <OutputPath>bin\EX2013SP1CU8\</OutputPath>
+    <OutputPath>bin\2013SP1CU8\</OutputPath>
     <DefineConstants>DEBUG;TRACE;EX2013SP1CU8</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -298,7 +298,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

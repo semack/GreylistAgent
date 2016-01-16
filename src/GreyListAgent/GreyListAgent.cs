@@ -10,7 +10,7 @@ namespace GreyListAgent
     using System.Text.RegularExpressions;
     using NetTools;
     using log4net;
-    
+
     /// <summary>
     /// Agent for Greylisting
     /// </summary>
@@ -20,8 +20,13 @@ namespace GreyListAgent
         /// The error message that will be sent to the client if
         /// you want to temporarily reject the message.
         /// </summary>
-        private static readonly SmtpResponse DelayResponseMessage = new SmtpResponse(
-                        "451",
+        private static readonly SmtpResponse DelayResponseMessage =
+#if EX2016RTM
+        SmtpResponse.CreateWithDsnExplanation
+#else
+        new SmtpResponse
+#endif
+                        ("451",
                         "4.7.1",
                         "Greylisted. Try again later.");
 
