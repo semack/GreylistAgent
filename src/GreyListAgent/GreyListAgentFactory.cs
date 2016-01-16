@@ -16,17 +16,12 @@ namespace GreyListAgent
         /// <summary>
         /// Configuration filename for GreyList Configuration
         /// </summary>
-        private const string ConfigFileName = "GreyListConfig.xml";
+        private const string ConfigFileName = "GreyListAgent.config";
 
         /// <summary>
         /// Database filename for persistant storage of the database
         /// </summary>
         private const string DatabaseFile = "GreyListDatabase.xml";
-
-        /// <summary>
-        /// Log filename for logging
-        /// </summary>
-        private const string LogFile = "GreyListLog.txt";
 
         /// <summary>
         /// Crypto hash manager
@@ -84,8 +79,7 @@ namespace GreyListAgent
                                      this.greylistSettings,
                                      this.greylistDatabase,
                                      this.hashManager,
-                                     server,
-                                     Path.Combine(this.dataPath, LogFile));
+                                     server);
         }
     }
 }

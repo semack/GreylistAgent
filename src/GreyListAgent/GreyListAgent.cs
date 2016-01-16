@@ -4,15 +4,14 @@ namespace GreyListAgent
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
-    using System.IO;
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
     using Microsoft.Exchange.Data.Mime;
     using System.Text.RegularExpressions;
-    using System.Globalization;
-    using System.Threading;
     using NetTools;
-
+    using log4net;
+    using System.Reflection;
+    
     /// <summary>
     /// Agent for Greylisting
     /// </summary>
@@ -62,9 +61,9 @@ namespace GreyListAgent
         private SHA256Managed hashManager;
 
         /// <summary>
-        /// Path to log file
+        /// Using log4net as logger
         /// </summary>
-        private String logPath;
+        private static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a Greylist agent for use
@@ -73,7 +72,7 @@ namespace GreyListAgent
         /// <param name="greylistDatabase">Greylist database to use for triplet management</param>
         /// <param name="hashManager">hash manager</param>
         /// <param name="server">Exchange server instance</param>
-        public GreyListAgent(GreyListSettings settings, GreyListDatabase greylistDatabase, SHA256Managed hashManager, SmtpServer server, String logPath)
+        public GreyListAgent(GreyListSettings settings, GreyListDatabase greylistDatabase, SHA256Managed hashManager, SmtpServer server)
         {
             // Initialize instance variables.
             this.settings = settings;
@@ -81,31 +80,31 @@ namespace GreyListAgent
             this.greylistDatabase = greylistDatabase;
             this.testOnEndOfHeaders = false;
             this.hashManager = hashManager;
-            this.logPath = logPath;
 
             // Set up the hooks to have your functions called when certain events occur.
             this.OnRcptCommand += new RcptCommandEventHandler(this.OnRcptCommandHandler);
             this.OnEndOfHeaders += new EndOfHeadersEventHandler(this.OnEndOfHeaderHandler);
         }
-        
+
         public void OnRcptCommandHandler(ReceiveCommandEventSource source, RcptCommandEventArgs rcptArgs)
         {
             // Check the parameter values.
             if (source == null || rcptArgs == null)
             {
-                this.logLine("ERROR: Source or Recipient Argements was null", 1);
+                log.Error("ERROR: Source or Recipient Argements was null");
                 return;
             }
 
             // Skip filtering for internal mail.
             if (!rcptArgs.SmtpSession.IsExternalConnection)
             {
-                
+
                 if (rcptArgs.RecipientAddress.ToString().IndexOf("HealthMailbox") == 0)
                 {
                     return;
                 }
-                this.logLine("FROM=, TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Bypassed, REASON=Internal Connection", 2);
+                log.DebugFormat("FROM=, TO={0}, REMOTE={1}, STATE=Bypassed, REASON=Internal Connection",
+                    rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 return;
             }
 
@@ -120,7 +119,8 @@ namespace GreyListAgent
             // Check to see if whitelisted or in safe senders list
             if (this.ShouldBypassFilter(rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address))
             {
-                this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Bypassed, REASON=Filter Bypass Match", 2);
+                log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Bypassed, REASON=Filter Bypass Match",
+                    rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 return;
             }
 
@@ -128,17 +128,19 @@ namespace GreyListAgent
             // or let through.
             if (!this.VerifyTriplet(rcptArgs.SmtpSession.RemoteEndPoint.Address, rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress))
             {
-                this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=Triplet verification Fail", 2);
+                log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verification Fail",
+                    rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 source.RejectCommand(DelayResponseMessage);
                 return;
             }
-            this.logLine("FROM=" + rcptArgs.MailItem.FromAddress.ToString() + ", TO=" + rcptArgs.RecipientAddress.ToString() + ", REMOTE=" + rcptArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Accept, REASON=Triplet Match.", 2);
-                
+            log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Accept, REASON=Triplet Match.",
+                rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
+
             // Finally, check a few rows
             // for expired entries that need to be cleaned up.
             this.greylistDatabase.Clean(this.settings.CleanRowCount, this.settings.ConfirmedMaxAge, this.settings.UnconfirmedMaxAge);
         }
-        
+
         public void OnEndOfHeaderHandler(ReceiveMessageEventSource source, EndOfHeadersEventArgs eodArgs)
         {
             if (this.testOnEndOfHeaders)
@@ -155,7 +157,8 @@ namespace GreyListAgent
                 }
                 else
                 {
-                    this.logLine("FROM=, TO=Multiple, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=No from address.", 2);                
+                    log.DebugFormat("FROM=, TO=Multiple, REMOTE={0}, STATE=Greylist, REASON=No from address.",
+                        eodArgs.SmtpSession.RemoteEndPoint.Address);
                     // No sender address, reject the message.
                     source.RejectMessage(DelayResponseMessage);
                     return;
@@ -171,22 +174,25 @@ namespace GreyListAgent
                     }
                     if (!this.VerifyTriplet(eodArgs.SmtpSession.RemoteEndPoint.Address, senderAddress, currentRecipient.Address))
                     {
-                        this.logLine("FROM="+senderAddress.ToString()+", TO="+currentRecipient.Address.ToString()+", REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=Triplet verify failed.", 2);  
+                        log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verify failed.",
+                            senderAddress, currentRecipient.Address, eodArgs.SmtpSession.RemoteEndPoint.Address);
                         rejectAll = true;
                     }
                 }
 
                 if (rejectAll)
                 {
-                    this.logLine("FROM=" + senderAddress.ToString() + ", TO=MANY, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Greylist, REASON=One or more recipients failed Triplet verification.", 2);                
+                    log.DebugFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Greylist, REASON=One or more recipients failed Triplet verification.",
+                        senderAddress, eodArgs.SmtpSession.RemoteEndPoint.Address);
                     source.RejectMessage(DelayResponseMessage);
                     return;
                 }
-                this.logLine("FROM=" + senderAddress.ToString() + ", TO=MANY, REMOTE=" + eodArgs.SmtpSession.RemoteEndPoint.Address.ToString() + ", STATE=Accept, REASON=Triplets Match.", 2);                
-                    
+                log.DebugFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Accept, REASON=Triplets Match.",
+                    senderAddress, eodArgs.SmtpSession.RemoteEndPoint.Address);
+
             }
         }
-        
+
 
         private bool VerifyTriplet(IPAddress remoteIP, RoutingAddress sender, RoutingAddress recipient)
         {
@@ -196,22 +202,23 @@ namespace GreyListAgent
             // Check to see if we are already aware of this hash
             if (this.greylistDatabase.Contains(tripletHash))
             {
+                var entry = (GreyListEntry)this.greylistDatabase[tripletHash];
                 // We are aware of it. Check to see if it's already been confirmed
-                if (((GreyListEntry)this.greylistDatabase[tripletHash]).Confirmed)
+                if (entry.Confirmed)
                 {
                     // Update the last seen
-                    ((GreyListEntry)this.greylistDatabase[tripletHash]).Count += 1;
-                    ((GreyListEntry)this.greylistDatabase[tripletHash]).LastSeen = DateTime.UtcNow;
-                    
+                    entry.Count += 1;
+                    entry.LastSeen = DateTime.UtcNow;
+
                     // Go ahead and return true
                     return true;
                 }
 
                 // We are aware of it but it's not confirmed, Check to see if the blocking period has passed
-                if (DateTime.UtcNow.Subtract(this.settings.GreylistingPeriod) > ((GreyListEntry)this.greylistDatabase[tripletHash]).LastSeen)
+                if (DateTime.UtcNow.Subtract(this.settings.GreylistingPeriod) > entry.LastSeen)
                 {
-                    ((GreyListEntry)this.greylistDatabase[tripletHash]).Confirmed = true;
-                    ((GreyListEntry)this.greylistDatabase[tripletHash]).LastSeen = DateTime.UtcNow;
+                    entry.Confirmed = true;
+                    entry.LastSeen = DateTime.UtcNow;
                     return true;
                 }
 
@@ -231,8 +238,8 @@ namespace GreyListAgent
             {
                 return false;
             }
-            
-            
+
+
             // Check Exchange bypasses
             AddressBook addressBook = this.server.AddressBook;
             if (addressBook != null)
@@ -277,7 +284,8 @@ namespace GreyListAgent
                         try
                         {
                             Regex domaintest = new Regex(domain);
-                            if (domaintest.IsMatch(hostInfo.HostName)) {
+                            if (domaintest.IsMatch(hostInfo.HostName))
+                            {
                                 return true;
                             }
                         }
@@ -295,8 +303,9 @@ namespace GreyListAgent
                     }
 
                     // Test for any subdomain match
-                    string reversed = Reverse("."+domain);
-                    if (reversedHostname.IndexOf(reversed) == 0) {
+                    string reversed = Reverse("." + domain);
+                    if (reversedHostname.IndexOf(reversed) == 0)
+                    {
                         return true;
                     }
                 }
@@ -318,7 +327,7 @@ namespace GreyListAgent
             if (senderIP != null)
             {
                 // Apply a netmask to any incoming IPs
-                try 
+                try
                 {
 
                     tripletString = string.Concat(tripletString, IPAddressRange.Parse(senderIP.ToString() + "/" + this.settings.IpNetmask.ToString()).Begin.ToString());
@@ -376,38 +385,6 @@ namespace GreyListAgent
             char[] charArray = s.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
-        }
-
-        private void logLine(string message, int level)
-        {
-            // Don't log it if we dont want it
-            if (level > this.settings.LogLevel)
-            {
-                return;
-            }
-
-            // 10 tries 100ms apart
-            int tries = 10;
-            while (tries > 0)
-            {
-                try
-                {
-                    if (!File.Exists(this.logPath))
-                    {
-                        File.CreateText(this.logPath).Close();
-                    }
-                    StreamWriter log = File.AppendText(this.logPath);
-                    log.WriteLine("[" + DateTime.Now.ToString("g", DateTimeFormatInfo.InvariantInfo) + "] " + message);
-                    log.Close();
-                    tries = 0;
-                }
-                catch
-                {
-                    tries -= 1;
-                    Thread.Sleep(100);
-                }
-            }
-
         }
     }
 }
