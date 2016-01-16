@@ -15,6 +15,7 @@ git:
 
 solution: src/GreyListAgent.sln
 
+cache: apt
 
 script:
   - xbuild /p:Configuration=Release src/GreyListAgent.sln
