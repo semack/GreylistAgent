@@ -103,7 +103,7 @@ namespace GreyListAgent
                 {
                     return;
                 }
-                log.DebugFormat("FROM=, TO={0}, REMOTE={1}, STATE=Bypassed, REASON=Internal Connection",
+                log.InfoFormat("FROM=, TO={0}, REMOTE={1}, STATE=Bypassed, REASON=Internal Connection",
                     rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 return;
             }
@@ -119,7 +119,7 @@ namespace GreyListAgent
             // Check to see if whitelisted or in safe senders list
             if (this.ShouldBypassFilter(rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address))
             {
-                log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Bypassed, REASON=Filter Bypass Match",
+                log.InfoFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Bypassed, REASON=Filter Bypass Match",
                     rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 return;
             }
@@ -128,12 +128,12 @@ namespace GreyListAgent
             // or let through.
             if (!this.VerifyTriplet(rcptArgs.SmtpSession.RemoteEndPoint.Address, rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress))
             {
-                log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verification Fail",
+                log.InfoFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verification Fail",
                     rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
                 source.RejectCommand(DelayResponseMessage);
                 return;
             }
-            log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Accept, REASON=Triplet Match.",
+            log.InfoFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Accept, REASON=Triplet Match.",
                 rcptArgs.MailItem.FromAddress, rcptArgs.RecipientAddress, rcptArgs.SmtpSession.RemoteEndPoint.Address);
 
             // Finally, check a few rows
@@ -157,7 +157,7 @@ namespace GreyListAgent
                 }
                 else
                 {
-                    log.DebugFormat("FROM=, TO=Multiple, REMOTE={0}, STATE=Greylist, REASON=No from address.",
+                    log.InfoFormat("FROM=, TO=Multiple, REMOTE={0}, STATE=Greylist, REASON=No from address.",
                         eodArgs.SmtpSession.RemoteEndPoint.Address);
                     // No sender address, reject the message.
                     source.RejectMessage(DelayResponseMessage);
@@ -174,7 +174,7 @@ namespace GreyListAgent
                     }
                     if (!this.VerifyTriplet(eodArgs.SmtpSession.RemoteEndPoint.Address, senderAddress, currentRecipient.Address))
                     {
-                        log.DebugFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verify failed.",
+                        log.InfoFormat("FROM={0}, TO={1}, REMOTE={2}, STATE=Greylist, REASON=Triplet verify failed.",
                             senderAddress, currentRecipient.Address, eodArgs.SmtpSession.RemoteEndPoint.Address);
                         rejectAll = true;
                     }
@@ -182,12 +182,12 @@ namespace GreyListAgent
 
                 if (rejectAll)
                 {
-                    log.DebugFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Greylist, REASON=One or more recipients failed Triplet verification.",
+                    log.InfoFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Greylist, REASON=One or more recipients failed Triplet verification.",
                         senderAddress, eodArgs.SmtpSession.RemoteEndPoint.Address);
                     source.RejectMessage(DelayResponseMessage);
                     return;
                 }
-                log.DebugFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Accept, REASON=Triplets Match.",
+                log.InfoFormat("FROM={0}, TO=MANY, REMOTE={1}, STATE=Accept, REASON=Triplets Match.",
                     senderAddress, eodArgs.SmtpSession.RemoteEndPoint.Address);
 
             }
