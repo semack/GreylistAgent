@@ -16,7 +16,6 @@ namespace GreyListAgent
         private List<string> whitelistClients;
         private List<string> whitelistIPs;
         private int ipNetmask;
-        private int logLevel;
 
         /// <summary>
         /// An empty constructor initializes with default values.
@@ -43,9 +42,6 @@ namespace GreyListAgent
             this.whitelistClients = new List<string>();
             this.whitelistIPs = new List<string>();
 
-            // Default log actions only
-            this.logLevel = 2;
-
             // Read configured options
             this.ReadXMLConfig(path);
  
@@ -60,7 +56,6 @@ namespace GreyListAgent
             this.IpNetmask = other.IpNetmask;
             this.WhitelistClients = other.WhitelistClients;
             this.WhitelistIPs = other.WhitelistIPs;
-            this.LogLevel = other.LogLevel;
         }
 
         /// <summary>
@@ -91,21 +86,6 @@ namespace GreyListAgent
             get { return this.greylistingPeriod; }
 
             set { this.greylistingPeriod = value; }
-        }
-
-        /// <summary>
-        /// Log Levels
-        /// 0 = No Logging
-        /// 1 = Errors only
-        /// 2 = 1 + Actions
-        /// 2 = 2 + Information (More information)
-        /// 3 = 3 + Debug (Very chatty)
-        /// </summary>
-        public int LogLevel
-        {
-            get { return this.logLevel; }
-
-            set { this.logLevel = value; }
         }
 
         /// <summary>
@@ -187,13 +167,6 @@ namespace GreyListAgent
                 if (fileInt > 0)
                 {
                     this.ipNetmask = fileInt;
-                }
-
-                // Read in the Log Level
-                fileInt = this.ReadXmlInt(xmlRoot, "LogLevel");
-                if (fileInt != 2)
-                {
-                    this.logLevel = fileInt;
                 }
 
                 // Read in the initial blocking period.
