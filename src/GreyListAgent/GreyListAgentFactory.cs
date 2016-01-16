@@ -60,6 +60,9 @@ namespace GreyListAgent
             Assembly currAssembly = Assembly.GetAssembly(this.GetType());
             string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
             this.dataPath = Path.Combine(assemblyPath, RelativeDataPath);
+            
+            // Configuring Log4Net
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.dataPath, LoggerConfigFileName)));
 
             // Load GreyList settings from file
             this.greylistSettings = new GreyListSettings(Path.Combine(this.dataPath, ConfigFileName));
@@ -83,7 +86,6 @@ namespace GreyListAgent
         /// <returns>A new Transport Agent.</returns>
         public override SmtpReceiveAgent CreateAgent(SmtpServer server)
         {
-            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.dataPath, LoggerConfigFileName)));
             return new GreyListAgent(
                                      this.greylistSettings,
                                      this.greylistDatabase,
