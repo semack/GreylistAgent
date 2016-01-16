@@ -18,4 +18,18 @@ solution: src/GreyListAgent.sln
 cache: apt
 
 script:
-  - xbuild /p:Configuration=Release src/GreyListAgent.sln
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU1
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU2
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU3
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU4
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU5
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU6
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU7
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU8
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU9
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU10
+  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU11
+  - xbuild src/GreyListAgent.sln /p:Configuration=2016RTM
+  - xbuild src/GreyListAgent.sln /p:Configuration=Release
