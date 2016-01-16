@@ -8,7 +8,7 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>GreyListAgent</AssemblyName>
     <RootNamespace>GreyListAgent</RootNamespace>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -35,32 +35,124 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013|AnyCPU'">
+    <OutputPath>bin\2013\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013CU1|AnyCPU'">
+    <OutputPath>bin\2013CU1\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2013CU1</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013CU2|AnyCPU'">
+    <OutputPath>bin\2013CU2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2013CU2</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013CU3|AnyCPU'">
+    <OutputPath>bin\2013CU3\</OutputPath>
+    <DefineConstants>EX2013CU3</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1|AnyCPU'">
+    <OutputPath>bin\2013SP1\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2013SP1</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU4|AnyCPU'">
+    <OutputPath>bin\2013SP1CU4\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013SP1CU4</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2016RTM|AnyCPU'">
+    <OutputPath>bin\2016RTM\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2016RTM</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU10|AnyCPU'">
+    <OutputPath>bin\2013SP1CU10\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013SP1CU10</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2013SP1CU5|AnyCPU' ">
+    <OutputPath>bin\EX2013SP1CU5\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013SP1CU5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU6|AnyCPU'">
+    <OutputPath>bin\2013SP1CU6\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013SP1CU6</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU7|AnyCPU'">
+    <OutputPath>bin\2013SP1CU7\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2013SP1CU7</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2013SP1CU8|AnyCPU' ">
+    <OutputPath>bin\EX2013SP1CU8\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;EX2013SP1CU8</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU9|AnyCPU'">
+    <OutputPath>bin\2013SP1CU9\</OutputPath>
+    <DefineConstants>TRACE;EX2013SP1CU9</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2013SP1CU11|AnyCPU'">
+    <OutputPath>bin\2013SP1CU11\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EX2013SP1CU11</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IPAddressRange, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -68,20 +160,124 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Exchange.Data.Common, Version=15.1.220.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExchangePublicDLLs\2010SP2\Microsoft.Exchange.Data.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Exchange.Data.Transport, Version=15.1.220.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExchangePublicDLLs\2010SP2\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013CU1'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU1\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013CU2'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013CU3'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU3\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013CU3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU4'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU4\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU4\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU5'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU6'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU6\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU6\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU7'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU7\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU7\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU8'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU8\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU8\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU9'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU9\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU9\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU10'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU10\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU10\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2013SP1CU11'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU11\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU11\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='2016RTM'">
+    <Reference Include="Microsoft.Exchange.Data.Common">
+      <HintPath>..\..\ExchangePublicDLLs\2016RTM\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport">
+      <HintPath>..\..\ExchangePublicDLLs\2016RTM\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GreyListSettings.cs" />
@@ -96,18 +292,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <None Include="GreyListAgentData\GreyListAgent.config">
