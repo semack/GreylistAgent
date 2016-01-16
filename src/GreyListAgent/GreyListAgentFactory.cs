@@ -5,7 +5,8 @@ namespace GreyListAgent
     using System.Security.Cryptography;
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
-
+    using log4net.Config;
+    using log4net;
     public class GreyListAgentFactory : SmtpReceiveAgentFactory
     {
         /// <summary>
@@ -17,6 +18,11 @@ namespace GreyListAgent
         /// Configuration filename for GreyList Configuration
         /// </summary>
         private const string ConfigFileName = "GreyListAgent.config";
+
+        /// <summary>
+        /// Configuration filename for Log4Net Configuration
+        /// </summary>
+        private const string LoggerConfigFileName = "GreyListAgent.Log4Net.config";
 
         /// <summary>
         /// Database filename for persistant storage of the database
@@ -42,6 +48,8 @@ namespace GreyListAgent
         /// Will contain the absolute path for RelativeDataPath
         /// </summary>
         private string dataPath;
+
+        private static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public GreyListAgentFactory()
         {
@@ -75,11 +83,13 @@ namespace GreyListAgent
         /// <returns>A new Transport Agent.</returns>
         public override SmtpReceiveAgent CreateAgent(SmtpServer server)
         {
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.dataPath, LoggerConfigFileName)));
             return new GreyListAgent(
                                      this.greylistSettings,
                                      this.greylistDatabase,
                                      this.hashManager,
-                                     server);
+                                     server,
+                                     log);
         }
     }
 }

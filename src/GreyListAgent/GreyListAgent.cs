@@ -10,7 +10,6 @@ namespace GreyListAgent
     using System.Text.RegularExpressions;
     using NetTools;
     using log4net;
-    using System.Reflection;
     
     /// <summary>
     /// Agent for Greylisting
@@ -63,7 +62,7 @@ namespace GreyListAgent
         /// <summary>
         /// Using log4net as logger
         /// </summary>
-        private static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private ILog log;
 
         /// <summary>
         /// Initializes a Greylist agent for use
@@ -72,7 +71,7 @@ namespace GreyListAgent
         /// <param name="greylistDatabase">Greylist database to use for triplet management</param>
         /// <param name="hashManager">hash manager</param>
         /// <param name="server">Exchange server instance</param>
-        public GreyListAgent(GreyListSettings settings, GreyListDatabase greylistDatabase, SHA256Managed hashManager, SmtpServer server)
+        public GreyListAgent(GreyListSettings settings, GreyListDatabase greylistDatabase, SHA256Managed hashManager, SmtpServer server, ILog log)
         {
             // Initialize instance variables.
             this.settings = settings;
@@ -80,6 +79,7 @@ namespace GreyListAgent
             this.greylistDatabase = greylistDatabase;
             this.testOnEndOfHeaders = false;
             this.hashManager = hashManager;
+            this.log = log;
 
             // Set up the hooks to have your functions called when certain events occur.
             this.OnRcptCommand += new RcptCommandEventHandler(this.OnRcptCommandHandler);
