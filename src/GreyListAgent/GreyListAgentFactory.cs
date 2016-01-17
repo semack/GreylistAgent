@@ -41,6 +41,9 @@ namespace GreyListAgent
             Assembly currAssembly = Assembly.GetAssembly(this.GetType());
             string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
             this.dataPath = Path.Combine(assemblyPath, Constants.RelativeDataPath);
+            
+            // Configuring Log4Net
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.dataPath, LoggerConfigFileName)));
 
             // Load GreyList settings from file
             this.greylistSettings = GreyListSettings.Load(Path.Combine(this.dataPath, Constants.ConfigFileName));
