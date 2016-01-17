@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreyListAgent.Configurator.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +15,22 @@ namespace GreyListAgent.Configurator
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Form form = null;
+            string[] asArgv = Environment.GetCommandLineArgs();
+
+            if (asArgv.Contains("-register"))
+                CplControl.Register();
+            else if (asArgv.Contains("-unregister"))
+                CplControl.Unregister();
+            else
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                form = new MainForm();
+            }
+
+            if (form != null)
+                Application.Run(form);
         }
     }
 }
