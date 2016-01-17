@@ -25,17 +25,17 @@ namespace GreyListAgent.Configurator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //if (!Directory.Exists(Constants.RelativeDataPath))
-            //    Directory.CreateDirectory(Constants.RelativeDataPath);
-            //var filename = Path.Combine(Constants.RelativeDataPath, Constants.ConfigFileName + ".1");
-            //var settings = GreyListSettings.Load(filename);
+            if (!Directory.Exists(Constants.RelativeDataPath))
+                Directory.CreateDirectory(Constants.RelativeDataPath);
+            var filename = Path.Combine(Constants.RelativeDataPath, Constants.ConfigFileName + ".1");
+            var settings = GreyListSettings.Load(filename);
             //settings.WhitelistIPs.Add("123.0.0.1");
             //settings.WhitelistIPs.Add("123.0.0.4"); settings.WhitelistIPs.Add("123.0.0.3");
 
             //settings.WhitelistClients.Add("elkeldldjd");
             //settings.WhitelistClients.Add("elkeldldjd");
             //settings.WhitelistClients.Add("elkeldldjd");
-            //settings.Save(filename);
+            settings.Save(filename);
         }
     }
 }

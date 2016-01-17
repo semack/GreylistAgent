@@ -55,12 +55,9 @@ namespace GreyListAgent
         }
 
         /// <summary>
-        /// List of rDNS records for clients (sending servers) to whitelist.
-        /// Regex is acceptable (must be encased in starting and ending slashes)
-        /// Non-Regex matches attempt a literal match and a wildcard subdomain match
+        /// IP Netmask to apply to source IPs when hashing triplets
         /// </summary>
-        [XmlArrayItem(ElementName = "Client")]
-        public List<string> WhitelistClients { get; set; }
+        public int IpNetmask { get; set; }
 
         /// <summary>
         /// List of IPs to whitelist (Can contain a subnet mask or CIDR)
@@ -69,9 +66,12 @@ namespace GreyListAgent
         public List<string> WhitelistIPs { get; set; }
 
         /// <summary>
-        /// IP Netmask to apply to source IPs when hashing triplets
+        /// List of rDNS records for clients (sending servers) to whitelist.
+        /// Regex is acceptable (must be encased in starting and ending slashes)
+        /// Non-Regex matches attempt a literal match and a wildcard subdomain match
         /// </summary>
-        public int IpNetmask { get; set; }
+        [XmlArrayItem(ElementName = "Client")]
+        public List<string> WhitelistClients { get; set; }
 
         /// <summary>
         /// An empty constructor initializes with default values.

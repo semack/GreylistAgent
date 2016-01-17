@@ -57,6 +57,9 @@ namespace GreyListAgent
         /// </summary>
         public override void Close()
         {
+            if (!Directory.Exists(Constants.RelativeDataPath))
+                Directory.CreateDirectory(Constants.RelativeDataPath);
+
             this.greylistDatabase.Save(Path.Combine(this.dataPath, Constants.DatabaseFile));
         }
 
