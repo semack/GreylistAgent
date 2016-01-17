@@ -4,9 +4,6 @@ env:
   global:
     - EnableNuGetPackageRestore=true
 
-git:
-  submodules: false
-
 solution: src/GreyListAgent.sln
 
 cache: apt
