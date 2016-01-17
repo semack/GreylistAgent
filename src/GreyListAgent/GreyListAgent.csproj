@@ -280,6 +280,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="GreyListSettings.cs" />
     <Compile Include="GreyListAgent.cs" />
     <Compile Include="GreyListAgentFactory.cs" />

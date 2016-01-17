@@ -32,10 +32,12 @@
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpOptions = new System.Windows.Forms.TabPage();
             this.tpIP = new System.Windows.Forms.TabPage();
+            this.tpClients = new System.Windows.Forms.TabPage();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.tpClients = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.tcMain.SuspendLayout();
+            this.tpOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -54,6 +56,7 @@
             // 
             // tpOptions
             // 
+            this.tpOptions.Controls.Add(this.button1);
             this.tpOptions.Location = new System.Drawing.Point(4, 22);
             this.tpOptions.Name = "tpOptions";
             this.tpOptions.Padding = new System.Windows.Forms.Padding(3);
@@ -71,6 +74,16 @@
             this.tpIP.TabIndex = 1;
             this.tpIP.Text = "IP Whitelist";
             this.tpIP.UseVisualStyleBackColor = true;
+            // 
+            // tpClients
+            // 
+            this.tpClients.Location = new System.Drawing.Point(4, 22);
+            this.tpClients.Name = "tpClients";
+            this.tpClients.Padding = new System.Windows.Forms.Padding(3);
+            this.tpClients.Size = new System.Drawing.Size(459, 435);
+            this.tpClients.TabIndex = 2;
+            this.tpClients.Text = "Client Whitelist";
+            this.tpClients.UseVisualStyleBackColor = true;
             // 
             // btnOk
             // 
@@ -94,15 +107,15 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // tpClients
+            // button1
             // 
-            this.tpClients.Location = new System.Drawing.Point(4, 22);
-            this.tpClients.Name = "tpClients";
-            this.tpClients.Padding = new System.Windows.Forms.Padding(3);
-            this.tpClients.Size = new System.Drawing.Size(459, 435);
-            this.tpClients.TabIndex = 2;
-            this.tpClients.Text = "Client Whitelist";
-            this.tpClients.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(186, 198);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -122,6 +135,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Exchange Graylist Configuration";
             this.tcMain.ResumeLayout(false);
+            this.tpOptions.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -134,6 +148,7 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.TabPage tpClients;
+        private System.Windows.Forms.Button button1;
     }
 }
 
