@@ -4,23 +4,23 @@ env:
   global:
     - EnableNuGetPackageRestore=true
 
-solution: src/GreyListAgent.sln
+solution: GreyListAgent.sln
 
 cache: apt
 
 script:
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU1
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU2
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013CU3
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU4
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU5
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU6
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU7
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU8
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU9
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU10
-  - xbuild src/GreyListAgent.sln /p:Configuration=2013SP1CU11
-  - xbuild src/GreyListAgent.sln /p:Configuration=2016RTM
-  - xbuild src/GreyListAgent.sln /p:Configuration=Release
+  - xbuild GreyListAgent.sln /p:Configuration=2013
+  - xbuild GreyListAgent.sln /p:Configuration=2013CU1
+  - xbuild GreyListAgent.sln /p:Configuration=2013CU2
+  - xbuild GreyListAgent.sln /p:Configuration=2013CU3
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU4
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU5
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU6
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU7
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU8
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU9
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU10
+  - xbuild GreyListAgent.sln /p:Configuration=2013SP1CU11
+  - xbuild GreyListAgent.sln /p:Configuration=2016RTM
+  - xbuild GreyListAgent.sln /p:Configuration=Release

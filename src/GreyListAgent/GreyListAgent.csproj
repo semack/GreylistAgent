@@ -156,11 +156,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IPAddressRange, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IPAddressRange.1.5.0.0\lib\net40\IPAddressRange.dll</HintPath>
+      <HintPath>..\..\packages\IPAddressRange.1.5.0.0\lib\net40\IPAddressRange.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -169,114 +169,114 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013CU1'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU1\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013CU1\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013CU1\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013CU2'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013CU3'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU3\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013CU3\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013CU3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013CU3\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU4'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU4\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU4\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU4\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU4\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU5'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU6'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU6\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU6\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU6\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU6\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU7'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU7\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU7\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU7\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU7\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU8'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU8\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU8\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU8\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU8\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU9'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU9\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU9\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU9\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU9\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU10'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU10\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU10\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU10\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU10\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2013SP1CU11'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU11\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU11\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2013SP1CU11\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2013SP1CU11\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='2016RTM'">
     <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\..\ExchangePublicDLLs\2016RTM\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <HintPath>..\..\libs\2016RTM\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\..\ExchangePublicDLLs\2016RTM\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <HintPath>..\..\libs\2016RTM\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
