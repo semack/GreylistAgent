@@ -26,5 +26,9 @@ namespace GreyListAgent
         /// Database filename for persistant storage of the database
         /// </summary>
         public const string DatabaseFile = "GreyListDatabase.xml";
+
+        public const string HomePageUri = "https://github.com/jmdevince/GreylistAgent";
+
+        public const string AuthorEmail = "james@hexhost.net";
     }
 }

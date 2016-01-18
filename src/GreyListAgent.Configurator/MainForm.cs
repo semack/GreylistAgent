@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GreyListAgent.Configurator
 {
     public partial class MainForm : Form
     {
+        private readonly GreyListSettings settings;
+
         public MainForm()
         {
+            settings = GreyListSettings.Load(Path.Combine(Constants.RelativeDataPath, Constants.ConfigFileName));
             InitializeComponent();
         }
+
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -36,6 +34,21 @@ namespace GreyListAgent.Configurator
             //settings.WhitelistClients.Add("elkeldldjd");
             //settings.WhitelistClients.Add("elkeldldjd");
             settings.Save(filename);
+        }
+
+        private void lblHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(Constants.HomePageUri);
+        }
+
+        private void lblAuthor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(string.Format("mailto:{0}", Constants.AuthorEmail));
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //tpConfirmedMaxAge.Value = settings.ConfirmedMaxAge;
         }
     }
 }
