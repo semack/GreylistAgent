@@ -59,6 +59,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.eventLog = new System.Diagnostics.EventLog();
+            this.timeSpanPicker1 = new Zeta.TimeSpanPicker();
             this.tcMain.SuspendLayout();
             this.tpOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -86,6 +87,7 @@
             // 
             // tpOptions
             // 
+            this.tpOptions.Controls.Add(this.timeSpanPicker1);
             this.tpOptions.Controls.Add(this.numericUpDown1);
             this.tpOptions.Controls.Add(this.edtCleanRowCount);
             this.tpOptions.Controls.Add(this.lblIpNetmask);
@@ -364,6 +366,20 @@
             // 
             this.eventLog.SynchronizingObject = this;
             // 
+            // timeSpanPicker1
+            // 
+            this.timeSpanPicker1.BackColor = System.Drawing.SystemColors.Window;
+            this.timeSpanPicker1.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.timeSpanPicker1.Location = new System.Drawing.Point(350, 176);
+            this.timeSpanPicker1.MinimumSize = new System.Drawing.Size(96, 20);
+            this.timeSpanPicker1.Name = "timeSpanPicker1";
+            this.timeSpanPicker1.ShowToolTip = true;
+            this.timeSpanPicker1.Size = new System.Drawing.Size(96, 21);
+            this.timeSpanPicker1.TabIndex = 13;
+            this.timeSpanPicker1.Tag = "";
+            this.timeSpanPicker1.ValueString = "00.00:00:00";
+            this.timeSpanPicker1.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnOk;
@@ -428,6 +444,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.NumericUpDown edtCleanRowCount;
         private System.Windows.Forms.Label lblIpNetmask;
+        private Zeta.TimeSpanPicker timeSpanPicker1;
     }
 }
 
