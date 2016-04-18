@@ -16,7 +16,7 @@ namespace GreyListAgent.Configurator
 
         private bool _hasChanges;
 
-        private static ILog _log = LogManager.GetLogger(Constants.AgentId);
+        private static ILog _log = LogManager.GetLogger(Constants.ConfiguratorId);
 
         private string ConfigPath
         {
@@ -38,8 +38,7 @@ namespace GreyListAgent.Configurator
 
         public MainForm()
         {
-            var info = new FileInfo(Path.Combine(ConfigPath, Constants.LoggerConfigFileName));
-            XmlConfigurator.Configure(info);
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(ConfigPath, Constants.LoggerConfigFileName)));
             _settings = GreyListSettings.Load(ConfigFileName);
             InitializeComponent();
         }
@@ -119,12 +118,6 @@ namespace GreyListAgent.Configurator
         private void ValueChanged(object sender, EventArgs e)
         {
             _hasChanges = true;
-        }
-
-        private void btnEventLog_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo someProcess = new ProcessStartInfo("eventvwr", "/c:Application");
-            Process.Start(someProcess);
         }
     }
 }

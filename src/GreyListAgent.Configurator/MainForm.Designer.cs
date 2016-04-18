@@ -32,8 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpOptions = new System.Windows.Forms.TabPage();
-            this.btnEventLog = new System.Windows.Forms.Button();
+            this.edtGreyListPeriod = new Zeta.TimeSpanPicker();
+            this.edtMaxAgeConfirmed = new Zeta.TimeSpanPicker();
             this.edtNetmask = new IPAddressControlLib.IPAddressControl();
+            this.edtMaxAgeUnConfirmed = new Zeta.TimeSpanPicker();
             this.edtCleanRowCount = new System.Windows.Forms.NumericUpDown();
             this.lblIpNetmask = new System.Windows.Forms.Label();
             this.lblUnconfirmedMaxAge = new System.Windows.Forms.Label();
@@ -65,9 +67,6 @@
             this.eventLog = new System.Diagnostics.EventLog();
             this.alMain = new Crad.Windows.Forms.Actions.ActionList();
             this.action1 = new Crad.Windows.Forms.Actions.Action();
-            this.edtGreyListPeriod = new Zeta.TimeSpanPicker();
-            this.edtMaxAgeConfirmed = new Zeta.TimeSpanPicker();
-            this.edtMaxAgeUnConfirmed = new Zeta.TimeSpanPicker();
             this.tcMain.SuspendLayout();
             this.tpOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edtCleanRowCount)).BeginInit();
@@ -116,15 +115,37 @@
             this.tpOptions.Text = "Preferences";
             this.tpOptions.UseVisualStyleBackColor = true;
             // 
-            // btnEventLog
+            // edtGreyListPeriod
             // 
-            this.btnEventLog.Location = new System.Drawing.Point(9, 476);
-            this.btnEventLog.Name = "btnEventLog";
-            this.btnEventLog.Size = new System.Drawing.Size(110, 23);
-            this.btnEventLog.TabIndex = 3;
-            this.btnEventLog.Text = "Show Event Log";
-            this.btnEventLog.UseVisualStyleBackColor = true;
-            this.btnEventLog.Click += new System.EventHandler(this.btnEventLog_Click);
+            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
+            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
+            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
+            this.edtGreyListPeriod.ShowToolTip = true;
+            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
+            this.edtGreyListPeriod.TabIndex = 2;
+            this.edtGreyListPeriod.Tag = "";
+            this.edtGreyListPeriod.ValueString = "00.00:00:00";
+            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeConfirmed
+            // 
+            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
+            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
+            this.edtMaxAgeConfirmed.ShowToolTip = true;
+            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeConfirmed.TabIndex = 3;
+            this.edtMaxAgeConfirmed.Tag = "";
+            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // edtNetmask
             // 
@@ -143,6 +164,22 @@
             this.edtNetmask.TabIndex = 5;
             this.edtNetmask.Text = "...";
             this.edtNetmask.TextChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeUnConfirmed
+            // 
+            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
+            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
+            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
+            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeUnConfirmed.TabIndex = 4;
+            this.edtMaxAgeUnConfirmed.Tag = "";
+            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // edtCleanRowCount
             // 
@@ -427,54 +464,6 @@
             this.alMain.Actions.Add(this.action1);
             this.alMain.ContainerControl = this;
             // 
-            // edtGreyListPeriod
-            // 
-            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
-            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
-            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
-            this.edtGreyListPeriod.ShowToolTip = true;
-            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
-            this.edtGreyListPeriod.TabIndex = 2;
-            this.edtGreyListPeriod.Tag = "";
-            this.edtGreyListPeriod.ValueString = "00.00:00:00";
-            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeConfirmed
-            // 
-            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
-            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
-            this.edtMaxAgeConfirmed.ShowToolTip = true;
-            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeConfirmed.TabIndex = 3;
-            this.edtMaxAgeConfirmed.Tag = "";
-            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeUnConfirmed
-            // 
-            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
-            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
-            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
-            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeUnConfirmed.TabIndex = 4;
-            this.edtMaxAgeUnConfirmed.Tag = "";
-            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
             // MainForm
             // 
             this.AcceptButton = this.btnOk;
@@ -482,7 +471,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(441, 511);
-            this.Controls.Add(this.btnEventLog);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.tcMain);
@@ -547,7 +535,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private Crad.Windows.Forms.Actions.ActionList alMain;
         private Crad.Windows.Forms.Actions.Action action1;
-        private System.Windows.Forms.Button btnEventLog;
     }
 }
 
