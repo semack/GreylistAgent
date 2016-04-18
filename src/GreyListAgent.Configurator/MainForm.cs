@@ -1,8 +1,11 @@
 ﻿using GreyListAgent.Configurator.Utils;
+using log4net;
+using log4net.Config;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace GreyListAgent.Configurator
@@ -13,17 +16,30 @@ namespace GreyListAgent.Configurator
 
         private bool _hasChanges;
 
+        private static ILog _log = LogManager.GetLogger(Constants.AgentId);
+
+        private string ConfigPath
+        {
+            get {
+                Assembly currAssembly = Assembly.GetAssembly(this.GetType());
+                string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
+                return Path.Combine(assemblyPath, Constants.RelativeConfigPath);
+            }
+        }
+
         private string ConfigFileName {
             get {
-                if (!Directory.Exists(Constants.RelativeConfigPath))
-                    Directory.CreateDirectory(Constants.RelativeConfigPath);
+                if (!Directory.Exists(ConfigPath))
+                    Directory.CreateDirectory(ConfigPath);
 
-                return Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName);
+                return Path.Combine(ConfigPath, Constants.AgentConfigFileName);
             }
         }
 
         public MainForm()
         {
+            var info = new FileInfo(Path.Combine(ConfigPath, Constants.LoggerConfigFileName));
+            XmlConfigurator.Configure(info);
             _settings = GreyListSettings.Load(ConfigFileName);
             InitializeComponent();
         }
@@ -64,6 +80,7 @@ namespace GreyListAgent.Configurator
 
             _settings.WhitelistClients.ForEach(item => { lbClientList.Items.Add(item); });
             _settings.WhitelistIPs.ForEach(item => { lbIPList.Items.Add(item); });
+            _log.Info("Configuration loaded");
         }
 
         private void SaveSettings()
@@ -86,7 +103,8 @@ namespace GreyListAgent.Configurator
                 _settings.WhitelistIPs.Add((string)item);
             }
             _settings.Save(ConfigFileName);
-        }
+            _log.Info("Configuration has been saved");
+    }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
@@ -101,6 +119,12 @@ namespace GreyListAgent.Configurator
         private void ValueChanged(object sender, EventArgs e)
         {
             _hasChanges = true;
+        }
+
+        private void btnEventLog_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo someProcess = new ProcessStartInfo("eventvwr", "/c:Application");
+            Process.Start(someProcess);
         }
     }
 }

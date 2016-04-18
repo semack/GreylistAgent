@@ -7,6 +7,7 @@ namespace GreyListAgent
 {
     public static class Constants
     {
+        public const string AgentId = @"Greylist Agent";
         /// <summary>
         /// Directory for storing the data relative to the DLL
         /// </summary>
