@@ -93,7 +93,7 @@ namespace GreyListAgent.Configurator
             if (_hasChanges)
             {
                 SaveSettings();
-                MessageBox.Show("To apply chnages you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("To apply changes you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             Close();
         }
