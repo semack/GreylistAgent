@@ -77,7 +77,19 @@
     <Compile Include="..\GreyListAgent\GreyListSettings.cs">
       <Link>GreyListSettings.cs</Link>
     </Compile>
+    <Compile Include="ClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientForm.Designer.cs">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\CplControl.cs" />
+    <Compile Include="IPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IPForm.Designer.cs">
+      <DependentUpon>IPForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +102,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Utils\NetworkHelper.cs" />
+    <EmbeddedResource Include="ClientForm.resx">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IPForm.resx">
+      <DependentUpon>IPForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

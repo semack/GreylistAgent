@@ -1,6 +1,7 @@
 ﻿using GreyListAgent.Configurator.Utils;
 using log4net;
 using log4net.Config;
+using NetTools;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -133,6 +134,51 @@ namespace GreyListAgent.Configurator
             aRemoveClient.Enabled = lbClientList.SelectedItem != null;
             aAddIP.Enabled = lbIPList.SelectedItem != null;
             aRemoveIP.Enabled = lbIPList.SelectedItem != null;
+        }
+
+        private void aAddIP_Execute(object sender, EventArgs e)
+        {
+            var form = new IPForm();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                var item = form.edtIP.Text;
+                int? cidr = null;
+                if (form.edtMask.Text != "...")
+                {
+                    cidr = NetworkHelper.Decimal2Cidr(form.edtMask.Text);
+                   item = string.Format("{0}/{1}", form.edtIP.Text, cidr);
+                }
+                lbIPList.Items.Add(item);
+                lbIPList.SelectedItem = item;
+                _hasChanges = true;
+            }
+        }
+
+        private void aEditIP_Execute(object sender, EventArgs e)
+        {
+            string[] separators = { "/" };
+            var item = lbClientList.SelectedItem;
+            var form = new IPForm();
+            string[] parts = (item.ToString()+"/").Split(separators, StringSplitOptions.None);
+            form.edtIP.Text = parts[0];
+            form.edtMask.Text = parts[1];
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                item = form.edtIP.Text;
+                int? cidr = null;
+                if (form.edtMask.Text != "...")
+                {
+                    item = string.Format("{0}/{1}", form.edtIP.Text, cidr);
+                }
+                //lbIPList.SelectedItem = item;
+                _hasChanges = true;
+            }
+        }
+
+        private void aRemoveIP_Execute(object sender, EventArgs e)
+        {
+            lbIPList.Items.RemoveAt(lbIPList.SelectedIndex);
+            _hasChanges = true;
         }
     }
 }
