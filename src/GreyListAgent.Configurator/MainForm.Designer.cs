@@ -32,10 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpOptions = new System.Windows.Forms.TabPage();
-            this.edtGreyListPeriod = new Zeta.TimeSpanPicker();
-            this.edtMaxAgeConfirmed = new Zeta.TimeSpanPicker();
             this.edtNetmask = new IPAddressControlLib.IPAddressControl();
-            this.edtMaxAgeUnConfirmed = new Zeta.TimeSpanPicker();
             this.edtCleanRowCount = new System.Windows.Forms.NumericUpDown();
             this.lblIpNetmask = new System.Windows.Forms.Label();
             this.lblUnconfirmedMaxAge = new System.Windows.Forms.Label();
@@ -47,30 +44,42 @@
             this.lblCopyrightLeft = new System.Windows.Forms.Label();
             this.lblHomePage = new System.Windows.Forms.LinkLabel();
             this.tpIP = new System.Windows.Forms.TabPage();
-            this.btnDeleteIP = new System.Windows.Forms.Button();
+            this.btnRemoveIP = new System.Windows.Forms.Button();
             this.btnEditIP = new System.Windows.Forms.Button();
             this.btnAddIP = new System.Windows.Forms.Button();
             this.lbIPList = new System.Windows.Forms.ListBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmIPs = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tpClients = new System.Windows.Forms.TabPage();
-            this.btnDeleteClient = new System.Windows.Forms.Button();
+            this.btnRemoveClient = new System.Windows.Forms.Button();
             this.btnEditClient = new System.Windows.Forms.Button();
             this.btnAddClient = new System.Windows.Forms.Button();
             this.lbClientList = new System.Windows.Forms.ListBox();
             this.cmClients = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAddClient = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditClient = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemoveClient = new System.Windows.Forms.ToolStripMenuItem();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
             this.btnOk = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.eventLog = new System.Diagnostics.EventLog();
             this.alMain = new Crad.Windows.Forms.Actions.ActionList();
-            this.action1 = new Crad.Windows.Forms.Actions.Action();
+            this.aAddIP = new Crad.Windows.Forms.Actions.Action();
+            this.aEditIP = new Crad.Windows.Forms.Actions.Action();
+            this.aRemoveIP = new Crad.Windows.Forms.Actions.Action();
+            this.aAddClient = new Crad.Windows.Forms.Actions.Action();
+            this.aEditClient = new Crad.Windows.Forms.Actions.Action();
+            this.aRemoveClient = new Crad.Windows.Forms.Actions.Action();
+            this.miAddIP = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditIP = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemoveIP = new System.Windows.Forms.ToolStripMenuItem();
+            this.edtGreyListPeriod = new Zeta.TimeSpanPicker();
+            this.edtMaxAgeConfirmed = new Zeta.TimeSpanPicker();
+            this.edtMaxAgeUnConfirmed = new Zeta.TimeSpanPicker();
             this.tcMain.SuspendLayout();
             this.tpOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edtCleanRowCount)).BeginInit();
             this.tpIP.SuspendLayout();
+            this.cmIPs.SuspendLayout();
             this.tpClients.SuspendLayout();
             this.cmClients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
@@ -115,38 +124,6 @@
             this.tpOptions.Text = "Preferences";
             this.tpOptions.UseVisualStyleBackColor = true;
             // 
-            // edtGreyListPeriod
-            // 
-            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
-            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
-            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
-            this.edtGreyListPeriod.ShowToolTip = true;
-            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
-            this.edtGreyListPeriod.TabIndex = 2;
-            this.edtGreyListPeriod.Tag = "";
-            this.edtGreyListPeriod.ValueString = "00.00:00:00";
-            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeConfirmed
-            // 
-            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
-            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
-            this.edtMaxAgeConfirmed.ShowToolTip = true;
-            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeConfirmed.TabIndex = 3;
-            this.edtMaxAgeConfirmed.Tag = "";
-            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
             // edtNetmask
             // 
             this.edtNetmask.AllowInternalTab = false;
@@ -164,22 +141,6 @@
             this.edtNetmask.TabIndex = 5;
             this.edtNetmask.Text = "...";
             this.edtNetmask.TextChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeUnConfirmed
-            // 
-            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
-            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
-            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
-            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeUnConfirmed.TabIndex = 4;
-            this.edtMaxAgeUnConfirmed.Tag = "";
-            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // edtCleanRowCount
             // 
@@ -283,7 +244,7 @@
             // 
             // tpIP
             // 
-            this.tpIP.Controls.Add(this.btnDeleteIP);
+            this.tpIP.Controls.Add(this.btnRemoveIP);
             this.tpIP.Controls.Add(this.btnEditIP);
             this.tpIP.Controls.Add(this.btnAddIP);
             this.tpIP.Controls.Add(this.lbIPList);
@@ -295,18 +256,20 @@
             this.tpIP.Text = "IP Whitelist";
             this.tpIP.UseVisualStyleBackColor = true;
             // 
-            // btnDeleteIP
+            // btnRemoveIP
             // 
-            this.btnDeleteIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteIP.Location = new System.Drawing.Point(326, 395);
-            this.btnDeleteIP.Name = "btnDeleteIP";
-            this.btnDeleteIP.Size = new System.Drawing.Size(75, 23);
-            this.btnDeleteIP.TabIndex = 3;
-            this.btnDeleteIP.Text = "Delete";
-            this.btnDeleteIP.UseVisualStyleBackColor = true;
+            this.alMain.SetAction(this.btnRemoveIP, this.aRemoveIP);
+            this.btnRemoveIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveIP.Location = new System.Drawing.Point(326, 395);
+            this.btnRemoveIP.Name = "btnRemoveIP";
+            this.btnRemoveIP.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveIP.TabIndex = 3;
+            this.btnRemoveIP.Text = "Remove";
+            this.btnRemoveIP.UseVisualStyleBackColor = true;
             // 
             // btnEditIP
             // 
+            this.alMain.SetAction(this.btnEditIP, this.aEditIP);
             this.btnEditIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEditIP.Location = new System.Drawing.Point(245, 395);
             this.btnEditIP.Name = "btnEditIP";
@@ -317,6 +280,7 @@
             // 
             // btnAddIP
             // 
+            this.alMain.SetAction(this.btnAddIP, this.aAddIP);
             this.btnAddIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddIP.Location = new System.Drawing.Point(164, 395);
             this.btnAddIP.Name = "btnAddIP";
@@ -330,21 +294,25 @@
             this.lbIPList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbIPList.ContextMenuStrip = this.contextMenuStrip1;
+            this.lbIPList.ContextMenuStrip = this.cmIPs;
             this.lbIPList.FormattingEnabled = true;
             this.lbIPList.Location = new System.Drawing.Point(14, 16);
             this.lbIPList.Name = "lbIPList";
             this.lbIPList.Size = new System.Drawing.Size(387, 368);
             this.lbIPList.TabIndex = 0;
             // 
-            // contextMenuStrip1
+            // cmIPs
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.cmIPs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddIP,
+            this.miEditIP,
+            this.miRemoveIP});
+            this.cmIPs.Name = "contextMenuStrip1";
+            this.cmIPs.Size = new System.Drawing.Size(118, 70);
             // 
             // tpClients
             // 
-            this.tpClients.Controls.Add(this.btnDeleteClient);
+            this.tpClients.Controls.Add(this.btnRemoveClient);
             this.tpClients.Controls.Add(this.btnEditClient);
             this.tpClients.Controls.Add(this.btnAddClient);
             this.tpClients.Controls.Add(this.lbClientList);
@@ -356,18 +324,20 @@
             this.tpClients.Text = "Client Whitelist";
             this.tpClients.UseVisualStyleBackColor = true;
             // 
-            // btnDeleteClient
+            // btnRemoveClient
             // 
-            this.btnDeleteClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteClient.Location = new System.Drawing.Point(324, 395);
-            this.btnDeleteClient.Name = "btnDeleteClient";
-            this.btnDeleteClient.Size = new System.Drawing.Size(75, 23);
-            this.btnDeleteClient.TabIndex = 7;
-            this.btnDeleteClient.Text = "Delete";
-            this.btnDeleteClient.UseVisualStyleBackColor = true;
+            this.alMain.SetAction(this.btnRemoveClient, this.aRemoveClient);
+            this.btnRemoveClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveClient.Location = new System.Drawing.Point(324, 395);
+            this.btnRemoveClient.Name = "btnRemoveClient";
+            this.btnRemoveClient.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveClient.TabIndex = 7;
+            this.btnRemoveClient.Text = "Remove";
+            this.btnRemoveClient.UseVisualStyleBackColor = true;
             // 
             // btnEditClient
             // 
+            this.alMain.SetAction(this.btnEditClient, this.aEditClient);
             this.btnEditClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEditClient.Location = new System.Drawing.Point(243, 395);
             this.btnEditClient.Name = "btnEditClient";
@@ -378,6 +348,7 @@
             // 
             // btnAddClient
             // 
+            this.alMain.SetAction(this.btnAddClient, this.aAddClient);
             this.btnAddClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddClient.Location = new System.Drawing.Point(162, 395);
             this.btnAddClient.Name = "btnAddClient";
@@ -401,29 +372,32 @@
             // cmClients
             // 
             this.cmClients.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.deleteToolStripMenuItem});
+            this.miAddClient,
+            this.miEditClient,
+            this.miRemoveClient});
             this.cmClients.Name = "contextMenuStrip2";
-            this.cmClients.Size = new System.Drawing.Size(108, 70);
+            this.cmClients.Size = new System.Drawing.Size(118, 70);
             // 
-            // addToolStripMenuItem
+            // miAddClient
             // 
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.addToolStripMenuItem.Text = "Add...";
+            this.alMain.SetAction(this.miAddClient, this.aAddClient);
+            this.miAddClient.Name = "miAddClient";
+            this.miAddClient.Size = new System.Drawing.Size(117, 22);
+            this.miAddClient.Text = "Add...";
             // 
-            // editToolStripMenuItem
+            // miEditClient
             // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.editToolStripMenuItem.Text = "Edit...";
+            this.alMain.SetAction(this.miEditClient, this.aEditClient);
+            this.miEditClient.Name = "miEditClient";
+            this.miEditClient.Size = new System.Drawing.Size(117, 22);
+            this.miEditClient.Text = "Edit...";
             // 
-            // deleteToolStripMenuItem
+            // miRemoveClient
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
+            this.alMain.SetAction(this.miRemoveClient, this.aRemoveClient);
+            this.miRemoveClient.Name = "miRemoveClient";
+            this.miRemoveClient.Size = new System.Drawing.Size(117, 22);
+            this.miRemoveClient.Text = "Remove";
             // 
             // ilIcons
             // 
@@ -461,8 +435,108 @@
             // 
             // alMain
             // 
-            this.alMain.Actions.Add(this.action1);
+            this.alMain.Actions.Add(this.aAddIP);
+            this.alMain.Actions.Add(this.aEditIP);
+            this.alMain.Actions.Add(this.aRemoveIP);
+            this.alMain.Actions.Add(this.aAddClient);
+            this.alMain.Actions.Add(this.aEditClient);
+            this.alMain.Actions.Add(this.aRemoveClient);
             this.alMain.ContainerControl = this;
+            this.alMain.Update += new System.EventHandler(this.alMain_Update);
+            // 
+            // aAddIP
+            // 
+            this.aAddIP.Text = "Add...";
+            // 
+            // aEditIP
+            // 
+            this.aEditIP.Text = "Edit...";
+            // 
+            // aRemoveIP
+            // 
+            this.aRemoveIP.Text = "Remove";
+            // 
+            // aAddClient
+            // 
+            this.aAddClient.Text = "Add...";
+            // 
+            // aEditClient
+            // 
+            this.aEditClient.Text = "Edit...";
+            // 
+            // aRemoveClient
+            // 
+            this.aRemoveClient.Text = "Remove";
+            // 
+            // miAddIP
+            // 
+            this.alMain.SetAction(this.miAddIP, this.aAddIP);
+            this.miAddIP.AutoToolTip = true;
+            this.miAddIP.Name = "miAddIP";
+            this.miAddIP.Size = new System.Drawing.Size(117, 22);
+            this.miAddIP.Text = "Add...";
+            // 
+            // miEditIP
+            // 
+            this.alMain.SetAction(this.miEditIP, this.aEditIP);
+            this.miEditIP.Name = "miEditIP";
+            this.miEditIP.Size = new System.Drawing.Size(117, 22);
+            this.miEditIP.Text = "Edit...";
+            // 
+            // miRemoveIP
+            // 
+            this.alMain.SetAction(this.miRemoveIP, this.aRemoveIP);
+            this.miRemoveIP.Name = "miRemoveIP";
+            this.miRemoveIP.Size = new System.Drawing.Size(117, 22);
+            this.miRemoveIP.Text = "Remove";
+            // 
+            // edtGreyListPeriod
+            // 
+            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
+            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
+            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
+            this.edtGreyListPeriod.ShowToolTip = true;
+            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
+            this.edtGreyListPeriod.TabIndex = 2;
+            this.edtGreyListPeriod.Tag = "";
+            this.edtGreyListPeriod.ValueString = "00.00:00:00";
+            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeConfirmed
+            // 
+            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
+            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
+            this.edtMaxAgeConfirmed.ShowToolTip = true;
+            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeConfirmed.TabIndex = 3;
+            this.edtMaxAgeConfirmed.Tag = "";
+            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeUnConfirmed
+            // 
+            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
+            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
+            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
+            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeUnConfirmed.TabIndex = 4;
+            this.edtMaxAgeUnConfirmed.Tag = "";
+            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // MainForm
             // 
@@ -488,6 +562,7 @@
             this.tpOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edtCleanRowCount)).EndInit();
             this.tpIP.ResumeLayout(false);
+            this.cmIPs.ResumeLayout(false);
             this.tpClients.ResumeLayout(false);
             this.cmClients.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
@@ -519,22 +594,30 @@
         private System.Windows.Forms.Label lblIpNetmask;
         private Zeta.TimeSpanPicker edtMaxAgeUnConfirmed;
         private IPAddressControlLib.IPAddressControl edtNetmask;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip cmIPs;
         private Zeta.TimeSpanPicker edtGreyListPeriod;
         private Zeta.TimeSpanPicker edtMaxAgeConfirmed;
-        private System.Windows.Forms.Button btnDeleteIP;
+        private System.Windows.Forms.Button btnRemoveIP;
         private System.Windows.Forms.Button btnEditIP;
         private System.Windows.Forms.Button btnAddIP;
-        private System.Windows.Forms.Button btnDeleteClient;
+        private System.Windows.Forms.Button btnRemoveClient;
         private System.Windows.Forms.Button btnEditClient;
         private System.Windows.Forms.Button btnAddClient;
         private System.Windows.Forms.ListBox lbClientList;
         private System.Windows.Forms.ContextMenuStrip cmClients;
-        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miAddClient;
+        private System.Windows.Forms.ToolStripMenuItem miEditClient;
+        private System.Windows.Forms.ToolStripMenuItem miRemoveClient;
         private Crad.Windows.Forms.Actions.ActionList alMain;
-        private Crad.Windows.Forms.Actions.Action action1;
+        private Crad.Windows.Forms.Actions.Action aAddIP;
+        private Crad.Windows.Forms.Actions.Action aEditIP;
+        private Crad.Windows.Forms.Actions.Action aRemoveIP;
+        private Crad.Windows.Forms.Actions.Action aAddClient;
+        private Crad.Windows.Forms.Actions.Action aEditClient;
+        private Crad.Windows.Forms.Actions.Action aRemoveClient;
+        private System.Windows.Forms.ToolStripMenuItem miAddIP;
+        private System.Windows.Forms.ToolStripMenuItem miEditIP;
+        private System.Windows.Forms.ToolStripMenuItem miRemoveIP;
     }
 }
 

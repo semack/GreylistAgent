@@ -4,7 +4,7 @@ using log4net.Config;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -61,9 +61,16 @@ namespace GreyListAgent.Configurator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            tcMain.SelectedIndex = 0;
             LoadSettings();
             _hasChanges = false;
+
+            tcMain.SelectedIndex = 0;
+
+            if (lbClientList.Items.Count > 0)
+                lbClientList.SelectedItem = lbClientList.Items[0];
+
+            if (lbIPList.Items.Count > 0)
+                lbIPList.SelectedItem = lbIPList.Items[0];
         }
 
         private void LoadSettings()
@@ -118,6 +125,14 @@ namespace GreyListAgent.Configurator
         private void ValueChanged(object sender, EventArgs e)
         {
             _hasChanges = true;
+        }
+
+        private void alMain_Update(object sender, EventArgs e)
+        {
+            aEditClient.Enabled = lbClientList.SelectedItem != null;
+            aRemoveClient.Enabled = lbClientList.SelectedItem != null;
+            aAddIP.Enabled = lbIPList.SelectedItem != null;
+            aRemoveIP.Enabled = lbIPList.SelectedItem != null;
         }
     }
 }
