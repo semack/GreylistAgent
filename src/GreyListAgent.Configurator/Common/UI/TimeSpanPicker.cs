@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using GreyListAgent.Configurator.Properties;
 
 namespace GreyListAgent.Configurator.Common.UI
 {
@@ -62,8 +63,8 @@ namespace GreyListAgent.Configurator.Common.UI
                 catch
                 {
                     MessageBox.Show(
-                        @"Fehler bei Datenübergabe an TimeSpanPicker! Vorgang wurde abgebrochen. string ""DD.HH:MM:SS"" DD - Days, HH - Hours, MM - Minutes, SS - Seconds",
-                        @"TimeSpanPicker Fehler", MessageBoxButtons.OK, MessageBoxIcon.Hand,
+                        @"Error in data transfer to TimeSpan Picker! Operation has been canceled. string ""dd.hh:MM:SS"" DD - Days, HH - hours, MM - Minutes, SS - Seconds",
+                        @"TimeSpanPicker Error", MessageBoxButtons.OK, MessageBoxIcon.Hand,
                         MessageBoxDefaultButton.Button1);
                 }
             }
@@ -85,8 +86,8 @@ namespace GreyListAgent.Configurator.Common.UI
                 catch
                 {
                     MessageBox.Show(
-                        @"Fehler bei Datenübergabe an TimeSpanPicker! Vorgang wurde abgebrochen. TimeSpan (DD,HH,MM,SS) DD - Days, HH - Hours, MM - Minutes, SS - Seconds",
-                        @"TimeSpanPicker Fehler", MessageBoxButtons.OK, MessageBoxIcon.Hand,
+                        @"Error in data transfer to TimeSpan Picker! Operation has been canceled. Timespan (DD, HH, MM, SS) DD - Days, HH - hours, MM - Minutes, SS - Seconds",
+                        @"TimeSpanPicker Error", MessageBoxButtons.OK, MessageBoxIcon.Hand,
                         MessageBoxDefaultButton.Button1);
                 }
             }
@@ -242,7 +243,7 @@ namespace GreyListAgent.Configurator.Common.UI
                 ShowAlways = true
             };
             _toolTip.SetToolTip(this,
-                "Geben Sie ein Datum im Format \"DD.HH:MM:SS\" mit\r\nDD - Tage, HH - Stunden, MM - Minuten, SS - Sekunden ein.");
+                "Enter a date in the format \"dd.hh:MM:SS\"\r\n with DD -day, HH - hours, MM - minutes, SS.");
         }
 
         protected override void OnGotFocus(EventArgs e)
