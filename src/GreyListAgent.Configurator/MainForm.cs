@@ -1,4 +1,5 @@
-﻿using GreyListAgent.Configurator.Utils;
+﻿using GreyListAgent.Configurator.Models;
+using GreyListAgent.Configurator.Utils;
 using log4net;
 using log4net.Config;
 using NetTools;
@@ -138,40 +139,35 @@ namespace GreyListAgent.Configurator
 
         private void aAddIP_Execute(object sender, EventArgs e)
         {
-            var form = new IPForm();
-            if (form.ShowDialog() == DialogResult.OK)
+            using (var form = new IPForm())
             {
-                var item = form.edtIP.Text;
-                int? cidr = null;
-                if (form.edtMask.Text != "...")
+                form.Text = "Add";
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    cidr = NetworkHelper.Decimal2Cidr(form.edtMask.Text);
-                   item = string.Format("{0}/{1}", form.edtIP.Text, cidr);
+                    var item = form.Entry.ToString();
+                    lbIPList.Items.Add(item);
+                    lbIPList.SelectedItem = item;
+                    _hasChanges = true;
                 }
-                lbIPList.Items.Add(item);
-                lbIPList.SelectedItem = item;
-                _hasChanges = true;
             }
         }
 
         private void aEditIP_Execute(object sender, EventArgs e)
         {
-            string[] separators = { "/" };
-            var item = lbClientList.SelectedItem;
-            var form = new IPForm();
-            string[] parts = (item.ToString()+"/").Split(separators, StringSplitOptions.None);
-            form.edtIP.Text = parts[0];
-            form.edtMask.Text = parts[1];
-            if (form.ShowDialog() == DialogResult.OK)
+            var index = lbIPList.SelectedIndex;
+            var item = lbIPList.SelectedItem as string;
+            var args = IPEntry.Parse(item);
+            using (var form = new IPForm(args))
             {
-                item = form.edtIP.Text;
-                int? cidr = null;
-                if (form.edtMask.Text != "...")
+                form.Text = "Update";
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    item = string.Format("{0}/{1}", form.edtIP.Text, cidr);
+                    item = form.Entry.ToString();
+                    lbIPList.Items.RemoveAt(index);
+                    lbIPList.Items.Insert(index, item);
+                    lbIPList.SelectedIndex = index;
+                    _hasChanges = true;
                 }
-                //lbIPList.SelectedItem = item;
-                _hasChanges = true;
             }
         }
 

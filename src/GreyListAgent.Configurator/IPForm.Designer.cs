@@ -133,6 +133,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "IPForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.gbInfo.ResumeLayout(false);
             this.gbInfo.PerformLayout();
@@ -146,7 +148,7 @@
         private System.Windows.Forms.GroupBox gbInfo;
         private System.Windows.Forms.Label lblNetmask;
         private System.Windows.Forms.Label lblIP;
-        internal IPAddressControlLib.IPAddressControl edtMask;
-        internal IPAddressControlLib.IPAddressControl edtIP;
+        private IPAddressControlLib.IPAddressControl edtMask;
+        private IPAddressControlLib.IPAddressControl edtIP;
     }
 }
