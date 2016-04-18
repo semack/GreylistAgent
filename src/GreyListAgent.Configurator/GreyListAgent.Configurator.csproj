@@ -99,11 +99,11 @@
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\ControlPanelControl.cs" />
-    <Compile Include="Forms\IPForm.cs">
+    <Compile Include="Forms\IpForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\IPForm.Designer.cs">
-      <DependentUpon>IPForm.cs</DependentUpon>
+    <Compile Include="Forms\IpForm.Designer.cs">
+      <DependentUpon>IpForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -121,8 +121,8 @@
     <EmbeddedResource Include="Forms\ClientForm.resx">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IPForm.resx">
-      <DependentUpon>IPForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\IpForm.resx">
+      <DependentUpon>IpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
