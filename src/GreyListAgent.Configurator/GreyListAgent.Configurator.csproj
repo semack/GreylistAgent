@@ -92,11 +92,11 @@
     <Compile Include="..\GreyListAgent\GreyListSettings.cs">
       <Link>Common\Imports\GreyListSettings.cs</Link>
     </Compile>
-    <Compile Include="Forms\ClientForm.cs">
+    <Compile Include="Forms\ClientEnterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ClientForm.Designer.cs">
-      <DependentUpon>ClientForm.cs</DependentUpon>
+    <Compile Include="Forms\ClientEnterForm.Designer.cs">
+      <DependentUpon>ClientEnterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\ControlPanelControl.cs" />
     <Compile Include="Forms\IpEnterForm.cs">
@@ -118,8 +118,8 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Common\Helpers\NetworkHelper.cs" />
-    <EmbeddedResource Include="Forms\ClientForm.resx">
-      <DependentUpon>ClientForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ClientEnterForm.resx">
+      <DependentUpon>ClientEnterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\IpEnterForm.resx">
       <DependentUpon>IpEnterForm.cs</DependentUpon>

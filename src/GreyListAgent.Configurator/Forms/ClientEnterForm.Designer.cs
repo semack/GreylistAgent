@@ -1,6 +1,6 @@
 ﻿namespace GreyListAgent.Configurator.Forms
 {
-    partial class ClientForm
+    partial class ClientEnterForm
     {
         /// <summary>
         /// Required designer variable.

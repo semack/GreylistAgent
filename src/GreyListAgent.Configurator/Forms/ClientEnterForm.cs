@@ -2,9 +2,9 @@
 
 namespace GreyListAgent.Configurator.Forms
 {
-    public partial class ClientForm : Form
+    public partial class ClientEnterForm : Form
     {
-        public ClientForm()
+        public ClientEnterForm()
         {
             InitializeComponent();
         }

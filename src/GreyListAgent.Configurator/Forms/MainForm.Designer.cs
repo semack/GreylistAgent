@@ -34,10 +34,7 @@ namespace GreyListAgent.Configurator.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpOptions = new System.Windows.Forms.TabPage();
-            this.edtGreyListPeriod = new TimeSpanPicker();
-            this.edtMaxAgeConfirmed = new TimeSpanPicker();
             this.edtNetmask = new IPAddressControlLib.IPAddressControl();
-            this.edtMaxAgeUnConfirmed = new TimeSpanPicker();
             this.edtCleanRowCount = new System.Windows.Forms.NumericUpDown();
             this.lblIpNetmask = new System.Windows.Forms.Label();
             this.lblUnconfirmedMaxAge = new System.Windows.Forms.Label();
@@ -77,6 +74,9 @@ namespace GreyListAgent.Configurator.Forms
             this.aRemoveClient = new Crad.Windows.Forms.Actions.Action();
             this.aEditClient = new Crad.Windows.Forms.Actions.Action();
             this.aAddClient = new Crad.Windows.Forms.Actions.Action();
+            this.edtGreyListPeriod = new GreyListAgent.Configurator.Common.UI.TimeSpanPicker();
+            this.edtMaxAgeConfirmed = new GreyListAgent.Configurator.Common.UI.TimeSpanPicker();
+            this.edtMaxAgeUnConfirmed = new GreyListAgent.Configurator.Common.UI.TimeSpanPicker();
             this.tcMain.SuspendLayout();
             this.tpOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edtCleanRowCount)).BeginInit();
@@ -126,38 +126,6 @@ namespace GreyListAgent.Configurator.Forms
             this.tpOptions.Text = "Preferences";
             this.tpOptions.UseVisualStyleBackColor = true;
             // 
-            // edtGreyListPeriod
-            // 
-            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
-            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
-            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
-            this.edtGreyListPeriod.ShowToolTip = true;
-            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
-            this.edtGreyListPeriod.TabIndex = 2;
-            this.edtGreyListPeriod.Tag = "";
-            this.edtGreyListPeriod.ValueString = "00.00:00:00";
-            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeConfirmed
-            // 
-            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
-            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
-            this.edtMaxAgeConfirmed.ShowToolTip = true;
-            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeConfirmed.TabIndex = 3;
-            this.edtMaxAgeConfirmed.Tag = "";
-            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
-            // 
             // edtNetmask
             // 
             this.edtNetmask.AllowInternalTab = false;
@@ -175,22 +143,6 @@ namespace GreyListAgent.Configurator.Forms
             this.edtNetmask.TabIndex = 5;
             this.edtNetmask.Text = "...";
             this.edtNetmask.TextChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // edtMaxAgeUnConfirmed
-            // 
-            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
-            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
-            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
-            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
-            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
-            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
-            this.edtMaxAgeUnConfirmed.TabIndex = 4;
-            this.edtMaxAgeUnConfirmed.Tag = "";
-            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
-            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
-            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // edtCleanRowCount
             // 
@@ -363,6 +315,7 @@ namespace GreyListAgent.Configurator.Forms
             // miAddIP
             // 
             this.alMain.SetAction(this.miAddIP, this.aAddIP);
+            this.miAddIP.AutoToolTip = true;
             this.miAddIP.Name = "miAddIP";
             this.miAddIP.Size = new System.Drawing.Size(117, 22);
             this.miAddIP.Text = "Add...";
@@ -370,7 +323,6 @@ namespace GreyListAgent.Configurator.Forms
             // miEditIP
             // 
             this.alMain.SetAction(this.miEditIP, this.aEditIP);
-            this.miEditIP.AutoToolTip = true;
             this.miEditIP.Name = "miEditIP";
             this.miEditIP.Size = new System.Drawing.Size(117, 22);
             this.miEditIP.Text = "Edit...";
@@ -378,7 +330,6 @@ namespace GreyListAgent.Configurator.Forms
             // miRemoveIP
             // 
             this.alMain.SetAction(this.miRemoveIP, this.aRemoveIP);
-            this.miRemoveIP.AutoToolTip = true;
             this.miRemoveIP.Name = "miRemoveIP";
             this.miRemoveIP.Size = new System.Drawing.Size(117, 22);
             this.miRemoveIP.Text = "Remove";
@@ -401,7 +352,7 @@ namespace GreyListAgent.Configurator.Forms
             // 
             this.alMain.SetAction(this.btnRemoveClient, this.aRemoveClient);
             this.btnRemoveClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemoveClient.Location = new System.Drawing.Point(324, 395);
+            this.btnRemoveClient.Location = new System.Drawing.Point(326, 395);
             this.btnRemoveClient.Name = "btnRemoveClient";
             this.btnRemoveClient.Size = new System.Drawing.Size(75, 23);
             this.btnRemoveClient.TabIndex = 7;
@@ -412,7 +363,7 @@ namespace GreyListAgent.Configurator.Forms
             // 
             this.alMain.SetAction(this.btnEditClient, this.aEditClient);
             this.btnEditClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditClient.Location = new System.Drawing.Point(243, 395);
+            this.btnEditClient.Location = new System.Drawing.Point(245, 395);
             this.btnEditClient.Name = "btnEditClient";
             this.btnEditClient.Size = new System.Drawing.Size(75, 23);
             this.btnEditClient.TabIndex = 6;
@@ -423,7 +374,7 @@ namespace GreyListAgent.Configurator.Forms
             // 
             this.alMain.SetAction(this.btnAddClient, this.aAddClient);
             this.btnAddClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddClient.Location = new System.Drawing.Point(162, 395);
+            this.btnAddClient.Location = new System.Drawing.Point(164, 395);
             this.btnAddClient.Name = "btnAddClient";
             this.btnAddClient.Size = new System.Drawing.Size(75, 23);
             this.btnAddClient.TabIndex = 5;
@@ -439,7 +390,7 @@ namespace GreyListAgent.Configurator.Forms
             this.lbClientList.FormattingEnabled = true;
             this.lbClientList.Location = new System.Drawing.Point(14, 16);
             this.lbClientList.Name = "lbClientList";
-            this.lbClientList.Size = new System.Drawing.Size(385, 368);
+            this.lbClientList.Size = new System.Drawing.Size(387, 368);
             this.lbClientList.TabIndex = 4;
             // 
             // cmClients
@@ -454,6 +405,7 @@ namespace GreyListAgent.Configurator.Forms
             // miAddClient
             // 
             this.alMain.SetAction(this.miAddClient, this.aAddClient);
+            this.miAddClient.AutoToolTip = true;
             this.miAddClient.Name = "miAddClient";
             this.miAddClient.Size = new System.Drawing.Size(117, 22);
             this.miAddClient.Text = "Add...";
@@ -461,6 +413,7 @@ namespace GreyListAgent.Configurator.Forms
             // miEditClient
             // 
             this.alMain.SetAction(this.miEditClient, this.aEditClient);
+            this.miEditClient.AutoToolTip = true;
             this.miEditClient.Name = "miEditClient";
             this.miEditClient.Size = new System.Drawing.Size(117, 22);
             this.miEditClient.Text = "Edit...";
@@ -468,6 +421,7 @@ namespace GreyListAgent.Configurator.Forms
             // miRemoveClient
             // 
             this.alMain.SetAction(this.miRemoveClient, this.aRemoveClient);
+            this.miRemoveClient.AutoToolTip = true;
             this.miRemoveClient.Name = "miRemoveClient";
             this.miRemoveClient.Size = new System.Drawing.Size(117, 22);
             this.miRemoveClient.Text = "Remove";
@@ -543,6 +497,54 @@ namespace GreyListAgent.Configurator.Forms
             // aAddClient
             // 
             this.aAddClient.Text = "Add...";
+            // 
+            // edtGreyListPeriod
+            // 
+            this.edtGreyListPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtGreyListPeriod.BackColor = System.Drawing.SystemColors.Window;
+            this.edtGreyListPeriod.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtGreyListPeriod.Location = new System.Drawing.Point(308, 46);
+            this.edtGreyListPeriod.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtGreyListPeriod.Name = "edtGreyListPeriod";
+            this.edtGreyListPeriod.ShowToolTip = true;
+            this.edtGreyListPeriod.Size = new System.Drawing.Size(96, 21);
+            this.edtGreyListPeriod.TabIndex = 2;
+            this.edtGreyListPeriod.Tag = "";
+            this.edtGreyListPeriod.ValueString = "00.00:00:00";
+            this.edtGreyListPeriod.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtGreyListPeriod.ValueChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeConfirmed
+            // 
+            this.edtMaxAgeConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeConfirmed.Location = new System.Drawing.Point(308, 73);
+            this.edtMaxAgeConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeConfirmed.Name = "edtMaxAgeConfirmed";
+            this.edtMaxAgeConfirmed.ShowToolTip = true;
+            this.edtMaxAgeConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeConfirmed.TabIndex = 3;
+            this.edtMaxAgeConfirmed.Tag = "";
+            this.edtMaxAgeConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // edtMaxAgeUnConfirmed
+            // 
+            this.edtMaxAgeUnConfirmed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.edtMaxAgeUnConfirmed.BackColor = System.Drawing.SystemColors.Window;
+            this.edtMaxAgeUnConfirmed.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edtMaxAgeUnConfirmed.Location = new System.Drawing.Point(308, 100);
+            this.edtMaxAgeUnConfirmed.MinimumSize = new System.Drawing.Size(96, 20);
+            this.edtMaxAgeUnConfirmed.Name = "edtMaxAgeUnConfirmed";
+            this.edtMaxAgeUnConfirmed.ShowToolTip = true;
+            this.edtMaxAgeUnConfirmed.Size = new System.Drawing.Size(96, 21);
+            this.edtMaxAgeUnConfirmed.TabIndex = 4;
+            this.edtMaxAgeUnConfirmed.Tag = "";
+            this.edtMaxAgeUnConfirmed.ValueString = "00.00:00:00";
+            this.edtMaxAgeUnConfirmed.ValueTimeSpan = System.TimeSpan.Parse("00:00:00");
+            this.edtMaxAgeUnConfirmed.ValueChanged += new System.EventHandler(this.ValueChanged);
             // 
             // MainForm
             // 
