@@ -289,9 +289,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Configs\Agent.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Configs\Agent.config" />
     <None Include="Configs\Log.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
