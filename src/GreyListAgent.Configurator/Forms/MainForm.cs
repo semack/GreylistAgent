@@ -139,7 +139,7 @@ namespace GreyListAgent.Configurator.Forms
 
         private void aAddIP_Execute(object sender, EventArgs e)
         {
-            using (var form = new IpForm())
+            using (var form = new IpEnterForm())
             {
                 form.Text = @"Add";
                 if (form.ShowDialog() == DialogResult.OK)
@@ -157,7 +157,7 @@ namespace GreyListAgent.Configurator.Forms
             var index = lbIPList.SelectedIndex;
             var item = lbIPList.SelectedItem as string;
             var args = IpEntry.Parse(item);
-            using (var form = new IpForm(args))
+            using (var form = new IpEnterForm(args))
             {
                 form.Text = @"Update";
                 if (form.ShowDialog() == DialogResult.OK)

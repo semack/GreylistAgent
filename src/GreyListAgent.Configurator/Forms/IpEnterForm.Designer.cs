@@ -1,6 +1,6 @@
 ﻿namespace GreyListAgent.Configurator.Forms
 {
-    partial class IpForm
+    partial class IpEnterForm
     {
         /// <summary>
         /// Required designer variable.

@@ -5,9 +5,9 @@ using GreyListAgent.Configurator.Common.Models;
 
 namespace GreyListAgent.Configurator.Forms
 {
-    public partial class IpForm : Form
+    public partial class IpEnterForm : Form
     {
-        public IpForm(IpEntry entry = null)
+        public IpEnterForm(IpEntry entry = null)
         {
             InitializeComponent();
             if (entry != null)
