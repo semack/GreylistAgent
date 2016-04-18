@@ -40,13 +40,13 @@ namespace GreyListAgent
             // Fetch the assembly, and populate paths
             Assembly currAssembly = Assembly.GetAssembly(this.GetType());
             string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
-            this.dataPath = Path.Combine(assemblyPath, Constants.RelativeDataPath);
+            this.dataPath = Path.Combine(assemblyPath, Constants.RelativeConfigPath);
             
             // Configuring Log4Net
             XmlConfigurator.Configure(new FileInfo(Path.Combine(this.dataPath, Constants.LoggerConfigFileName)));
 
             // Load GreyList settings from file
-            this.greylistSettings = GreyListSettings.Load(Path.Combine(this.dataPath, Constants.ConfigFileName));
+            this.greylistSettings = GreyListSettings.Load(Path.Combine(this.dataPath, Constants.AgentConfigFileName));
 
             // Load the database. The database will end up empty if the file doesn't exist or becomes corrupted
             this.greylistDatabase = GreyListDatabase.Load(Path.Combine(this.dataPath, Constants.DatabaseFile));
@@ -57,8 +57,8 @@ namespace GreyListAgent
         /// </summary>
         public override void Close()
         {
-            if (!Directory.Exists(Constants.RelativeDataPath))
-                Directory.CreateDirectory(Constants.RelativeDataPath);
+            if (!Directory.Exists(Constants.RelativeConfigPath))
+                Directory.CreateDirectory(Constants.RelativeConfigPath);
 
             this.greylistDatabase.Save(Path.Combine(this.dataPath, Constants.DatabaseFile));
         }

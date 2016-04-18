@@ -10,12 +10,12 @@ namespace GreyListAgent
         /// <summary>
         /// Directory for storing the data relative to the DLL
         /// </summary>
-        public const string RelativeDataPath = @"Data\";
+        public const string RelativeConfigPath = @"Data\";
 
         /// <summary>
         /// Configuration filename for GreyList Configuration
         /// </summary>
-        public const string ConfigFileName = "Agent.config";
+        public const string AgentConfigFileName = "Agent.config";
 
         /// <summary>
         /// Configuration filename for Log4Net Configuration

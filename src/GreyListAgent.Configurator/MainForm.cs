@@ -1,6 +1,8 @@
-﻿using System;
+﻿using GreyListAgent.Configurator.Utils;
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Windows.Forms;
 
 namespace GreyListAgent.Configurator
@@ -11,7 +13,7 @@ namespace GreyListAgent.Configurator
 
         public MainForm()
         {
-            settings = GreyListSettings.Load(Path.Combine(Constants.RelativeDataPath, Constants.ConfigFileName));
+            settings = GreyListSettings.Load(Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName));
             InitializeComponent();
         }
 
@@ -23,9 +25,9 @@ namespace GreyListAgent.Configurator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Constants.RelativeDataPath))
-                Directory.CreateDirectory(Constants.RelativeDataPath);
-            var filename = Path.Combine(Constants.RelativeDataPath, Constants.ConfigFileName + ".1");
+            if (!Directory.Exists(Constants.RelativeConfigPath))
+                Directory.CreateDirectory(Constants.RelativeConfigPath);
+            var filename = Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName + ".1");
             var settings = GreyListSettings.Load(filename);
             //settings.WhitelistIPs.Add("123.0.0.1");
             //settings.WhitelistIPs.Add("123.0.0.4"); settings.WhitelistIPs.Add("123.0.0.3");
@@ -48,7 +50,34 @@ namespace GreyListAgent.Configurator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //tpConfirmedMaxAge.Value = settings.ConfirmedMaxAge;
+            tcMain.SelectedIndex = 0;
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            if (!Directory.Exists(Constants.RelativeConfigPath))
+                Directory.CreateDirectory(Constants.RelativeConfigPath);
+            var fileName = Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName);
+            var settings = GreyListSettings.Load(fileName);
+
+            edtCleanRowCount.Value = settings.CleanRowCount;
+            edtGreyListPeriod.ValueTimeSpan = settings.GreylistingPeriod;
+            edtMaxAgeConfirmed.ValueTimeSpan = settings.ConfirmedMaxAge;
+            edtMaxAgeUnConfirmed.ValueTimeSpan = settings.UnconfirmedMaxAge;
+            edtNetmask.Text = NetworkHelper.Cidr2Decimal(settings.IpNetmask);
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+            MessageBox.Show("To apply chnages you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            Close();
+        }
+
+        private void SaveSettings()
+        {
+            //
         }
     }
 }

@@ -334,7 +334,6 @@ namespace GreyListAgent
                 // Apply a netmask to any incoming IPs
                 try
                 {
-
                     tripletString = string.Concat(tripletString, IPAddressRange.Parse(senderIP.ToString() + "/" + this.settings.IpNetmask.ToString()).Begin.ToString());
                 }
                 catch
