@@ -9,20 +9,19 @@ namespace GreyListAgent.Configurator.Models
 {
     public class IPEntry
     {
-        public string IpAddress { get; private set; }
+        public IPAddress IpAddress { get; private set; }
         public int? Cidr { get; private set; }
 
         public static IPEntry Parse(string source)
         {
-            string ip = null;
+            IPAddress ip = null;
             int? cidr = null;
             string[] separators = new string[] { "/" };
             string[] items = source.Trim().Split(separators, StringSplitOptions.None);
 
             if (items.Count() > 0)
             {
-                ip = items[0];
-                IPAddress.Parse(ip);
+                ip = IPAddress.Parse(items[0]);
                 if (items.Count() > 1)
                 {
                    cidr = int.Parse(items[1]);
@@ -34,24 +33,24 @@ namespace GreyListAgent.Configurator.Models
             return new IPEntry(ip, cidr);
         }
 
-        public IPEntry(string ipAddress, int? cidr = null)
+        public IPEntry(IPAddress ipAddress, int? cidr = null)
         {
-            IPAddress.Parse(ipAddress);
+            IpAddress = ipAddress;
 
             if (cidr != null)
             {
-                var value = ToString(ipAddress, cidr);
+                var value = ToString(IpAddress, cidr);
                 IPAddressRange.Parse(value);
             }
-            IpAddress = ipAddress;
+            
             Cidr = cidr;
         }
 
-        private string ToString(string ipAddress, int? cidr = null)
+        private string ToString(IPAddress ipAddress, int? cidr = null)
         {
             if (cidr != null)
                 return string.Format("{0}/{1}", ipAddress, cidr);
-            return ipAddress;
+            return ipAddress.ToString();
         }
 
         public new string ToString()

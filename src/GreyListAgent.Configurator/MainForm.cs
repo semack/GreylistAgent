@@ -2,11 +2,9 @@
 using GreyListAgent.Configurator.Utils;
 using log4net;
 using log4net.Config;
-using NetTools;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -44,7 +42,6 @@ namespace GreyListAgent.Configurator
             _settings = GreyListSettings.Load(ConfigFileName);
             InitializeComponent();
         }
-
 
         private void btnClose_Click(object sender, EventArgs e)
         {

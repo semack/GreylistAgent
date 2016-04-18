@@ -40,13 +40,13 @@
             // 
             // btnOk
             // 
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Location = new System.Drawing.Point(122, 119);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
