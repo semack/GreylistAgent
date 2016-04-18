@@ -9,11 +9,22 @@ namespace GreyListAgent.Configurator
 {
     public partial class MainForm : Form
     {
-        private readonly GreyListSettings settings;
+        private readonly GreyListSettings _settings;
+
+        private bool _hasChanges;
+
+        private string ConfigFileName {
+            get {
+                if (!Directory.Exists(Constants.RelativeConfigPath))
+                    Directory.CreateDirectory(Constants.RelativeConfigPath);
+
+                return Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName);
+            }
+        }
 
         public MainForm()
         {
-            settings = GreyListSettings.Load(Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName));
+            _settings = GreyListSettings.Load(ConfigFileName);
             InitializeComponent();
         }
 
@@ -21,21 +32,6 @@ namespace GreyListAgent.Configurator
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(Constants.RelativeConfigPath))
-                Directory.CreateDirectory(Constants.RelativeConfigPath);
-            var filename = Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName + ".1");
-            var settings = GreyListSettings.Load(filename);
-            //settings.WhitelistIPs.Add("123.0.0.1");
-            //settings.WhitelistIPs.Add("123.0.0.4"); settings.WhitelistIPs.Add("123.0.0.3");
-
-            //settings.WhitelistClients.Add("elkeldldjd");
-            //settings.WhitelistClients.Add("elkeldldjd");
-            //settings.WhitelistClients.Add("elkeldldjd");
-            settings.Save(filename);
         }
 
         private void lblHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -52,32 +48,59 @@ namespace GreyListAgent.Configurator
         {
             tcMain.SelectedIndex = 0;
             LoadSettings();
+            _hasChanges = false;
         }
 
         private void LoadSettings()
         {
-            if (!Directory.Exists(Constants.RelativeConfigPath))
-                Directory.CreateDirectory(Constants.RelativeConfigPath);
-            var fileName = Path.Combine(Constants.RelativeConfigPath, Constants.AgentConfigFileName);
-            var settings = GreyListSettings.Load(fileName);
+            edtCleanRowCount.Value = _settings.CleanRowCount;
+            edtGreyListPeriod.ValueTimeSpan = _settings.GreylistingPeriod;
+            edtMaxAgeConfirmed.ValueTimeSpan = _settings.ConfirmedMaxAge;
+            edtMaxAgeUnConfirmed.ValueTimeSpan = _settings.UnconfirmedMaxAge;
+            edtNetmask.Text = NetworkHelper.Cidr2Decimal(_settings.IpNetmask);
 
-            edtCleanRowCount.Value = settings.CleanRowCount;
-            edtGreyListPeriod.ValueTimeSpan = settings.GreylistingPeriod;
-            edtMaxAgeConfirmed.ValueTimeSpan = settings.ConfirmedMaxAge;
-            edtMaxAgeUnConfirmed.ValueTimeSpan = settings.UnconfirmedMaxAge;
-            edtNetmask.Text = NetworkHelper.Cidr2Decimal(settings.IpNetmask);
-        }
+            lbClientList.Items.Clear();
+            lbIPList.Items.Clear();
 
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-            SaveSettings();
-            MessageBox.Show("To apply chnages you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            Close();
+            _settings.WhitelistClients.ForEach(item => { lbClientList.Items.Add(item); });
+            _settings.WhitelistIPs.ForEach(item => { lbIPList.Items.Add(item); });
         }
 
         private void SaveSettings()
         {
-            //
+            _settings.CleanRowCount = (int)edtCleanRowCount.Value;
+            _settings.GreylistingPeriod = edtGreyListPeriod.ValueTimeSpan;
+            _settings.ConfirmedMaxAge = edtMaxAgeConfirmed.ValueTimeSpan;
+            _settings.UnconfirmedMaxAge = edtMaxAgeUnConfirmed.ValueTimeSpan;
+            _settings.IpNetmask = NetworkHelper.Decimal2Cidr(edtNetmask.Text);
+            _settings.WhitelistClients.Clear();
+            _settings.WhitelistIPs.Clear();
+
+            foreach (var item in lbClientList.Items)
+            {
+                _settings.WhitelistClients.Add((string)item);
+            }
+
+            foreach (var item in lbIPList.Items)
+            {
+                _settings.WhitelistIPs.Add((string)item);
+            }
+            _settings.Save(ConfigFileName);
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            if (_hasChanges)
+            {
+                SaveSettings();
+                MessageBox.Show("To apply chnages you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            Close();
+        }
+
+        private void ValueChanged(object sender, EventArgs e)
+        {
+            _hasChanges = true;
         }
     }
 }

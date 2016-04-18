@@ -10,7 +10,7 @@ namespace GreyListAgent
         /// <summary>
         /// Directory for storing the data relative to the DLL
         /// </summary>
-        public const string RelativeConfigPath = @"Data\";
+        public const string RelativeConfigPath = @"Configs\";
 
         /// <summary>
         /// Configuration filename for GreyList Configuration

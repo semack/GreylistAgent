@@ -20,6 +20,9 @@ namespace Zeta
         private System.Windows.Forms.ToolTip toolTip;
         private float xSize;
         private float ySize;
+        public event EventHandler ValueChanged;
+
+
 
         public TimeSpanPicker()
         {
@@ -198,6 +201,7 @@ namespace Zeta
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            bool hasChanged = false;
             base.OnKeyDown(e);
             if (this.activeBox > 0)
             {
@@ -241,11 +245,13 @@ namespace Zeta
                 {
                     this.number[this.activeBox - 1] = Convert.ToInt32(this.number[this.activeBox - 1].ToString("00").Substring(1, 1) + Convert.ToInt32(keyData.ToString().Substring(1, 1)).ToString());
                     this.Refresh();
+                    hasChanged = true;
                 }
                 else if ((((((Keys.NumPad0 == keyData) || (Keys.NumPad1 == keyData)) || ((Keys.NumPad2 == keyData) || (Keys.NumPad3 == keyData))) || (((Keys.NumPad4 == keyData) || (Keys.NumPad5 == keyData)) || ((Keys.NumPad6 == keyData) || (Keys.NumPad7 == keyData)))) || (Keys.NumPad8 == keyData)) || (Keys.NumPad9 == keyData))
                 {
                     this.number[this.activeBox - 1] = Convert.ToInt32(this.number[this.activeBox - 1].ToString("00").Substring(1, 1) + Convert.ToInt32(keyData.ToString().Substring(6, 1)).ToString());
                     this.Refresh();
+                    hasChanged = true;
                 }
                 else if (keyData == Keys.Delete)
                 {
@@ -261,6 +267,9 @@ namespace Zeta
                     }
                     this.Refresh();
                 }
+
+                if (hasChanged && ValueChanged != null)
+                    ValueChanged(this, new EventArgs());
             }
         }
 

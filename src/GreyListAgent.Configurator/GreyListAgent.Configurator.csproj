@@ -102,6 +102,10 @@
     <EmbeddedResource Include="UI\TimeSpanPicker.resx">
       <DependentUpon>TimeSpanPicker.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\GreyListAgent\Configs\Agent.config">
+      <Link>Configs\Agent.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
