@@ -1,37 +1,31 @@
-﻿using GreyListAgent.Configurator.Models;
-using GreyListAgent.Configurator.Utils;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using GreyListAgent.Configurator.Common.Helpers;
+using GreyListAgent.Configurator.Common.Models;
 
-namespace GreyListAgent.Configurator
+namespace GreyListAgent.Configurator.Forms
 {
-    public partial class IPForm : Form
+    public partial class IpForm : Form
     {
-        private IPEntry ParseInput()
-        {
-            int? cidr = null;
-            if (edtMask.Text != "...")
-                cidr = NetworkHelper.Decimal2Cidr(edtMask.IPAddress.ToString());
-            return new IPEntry(edtIP.IPAddress, cidr);
-        }
-
-        public IPEntry Entry
-        {
-            get
-            {
-                return ParseInput();
-            }
-        }
-
-        public IPForm(IPEntry entry = null)
+        public IpForm(IpEntry entry = null)
         {
             InitializeComponent();
             if (entry != null)
             {
                 edtIP.IPAddress = entry.IpAddress;
                 if (entry.Cidr != null)
-                    edtMask.Text = NetworkHelper.Cidr2Decimal((int)entry.Cidr);
+                    edtMask.Text = NetworkHelper.Cidr2Decimal((int) entry.Cidr);
             }
+        }
+
+        public IpEntry Entry => ParseInput();
+
+        private IpEntry ParseInput()
+        {
+            int? cidr = null;
+            if (edtMask.Text != @"...")
+                cidr = NetworkHelper.Decimal2Cidr(edtMask.IPAddress.ToString());
+            return new IpEntry(edtIP.IPAddress, cidr);
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -44,7 +38,7 @@ namespace GreyListAgent.Configurator
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                MessageBox.Show(ex.Message, @"Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
     }

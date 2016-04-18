@@ -1,6 +1,6 @@
-﻿namespace GreyListAgent.Configurator
+﻿namespace GreyListAgent.Configurator.Forms
 {
-    partial class IPForm
+    partial class IpForm
     {
         /// <summary>
         /// Required designer variable.
@@ -119,7 +119,7 @@
             this.edtIP.TabIndex = 0;
             this.edtIP.Text = "...";
             // 
-            // IPForm
+            // IpForm
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,7 +132,7 @@
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "IPForm";
+            this.Name = "IpForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

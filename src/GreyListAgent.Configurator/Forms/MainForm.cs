@@ -1,46 +1,48 @@
-﻿using GreyListAgent.Configurator.Models;
-using GreyListAgent.Configurator.Utils;
-using log4net;
-using log4net.Config;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using GreyListAgent.Configurator.Common.Helpers;
+using GreyListAgent.Configurator.Common.Models;
+using log4net;
+using log4net.Config;
 
-namespace GreyListAgent.Configurator
+namespace GreyListAgent.Configurator.Forms
 {
     public partial class MainForm : Form
     {
+        private static readonly ILog Log = LogManager.GetLogger(Constants.ConfiguratorId);
         private readonly GreyListSettings _settings;
 
         private bool _hasChanges;
-
-        private static ILog _log = LogManager.GetLogger(Constants.ConfiguratorId);
-
-        private string ConfigPath
-        {
-            get {
-                Assembly currAssembly = Assembly.GetAssembly(this.GetType());
-                string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
-                return Path.Combine(assemblyPath, Constants.RelativeConfigPath);
-            }
-        }
-
-        private string ConfigFileName {
-            get {
-                if (!Directory.Exists(ConfigPath))
-                    Directory.CreateDirectory(ConfigPath);
-
-                return Path.Combine(ConfigPath, Constants.AgentConfigFileName);
-            }
-        }
 
         public MainForm()
         {
             XmlConfigurator.Configure(new FileInfo(Path.Combine(ConfigPath, Constants.LoggerConfigFileName)));
             _settings = GreyListSettings.Load(ConfigFileName);
             InitializeComponent();
+        }
+
+        private string ConfigPath
+        {
+            get
+            {
+                var currAssembly = Assembly.GetAssembly(GetType());
+                var assemblyPath = Path.GetDirectoryName(currAssembly.Location);
+                return Path.Combine(assemblyPath, Constants.RelativeConfigPath);
+            }
+        }
+
+        private string ConfigFileName
+        {
+            get
+            {
+                if (!Directory.Exists(ConfigPath))
+                    Directory.CreateDirectory(ConfigPath);
+
+                return Path.Combine(ConfigPath, Constants.AgentConfigFileName);
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -55,7 +57,7 @@ namespace GreyListAgent.Configurator
 
         private void lblAuthor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(string.Format("mailto:{0}", Constants.AuthorEmail));
+            Process.Start($"mailto:{Constants.AuthorEmail}");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -85,12 +87,12 @@ namespace GreyListAgent.Configurator
 
             _settings.WhitelistClients.ForEach(item => { lbClientList.Items.Add(item); });
             _settings.WhitelistIPs.ForEach(item => { lbIPList.Items.Add(item); });
-            _log.Info("Configuration loaded");
+            Log.Info("Configuration loaded");
         }
 
         private void SaveSettings()
         {
-            _settings.CleanRowCount = (int)edtCleanRowCount.Value;
+            _settings.CleanRowCount = (int) edtCleanRowCount.Value;
             _settings.GreylistingPeriod = edtGreyListPeriod.ValueTimeSpan;
             _settings.ConfirmedMaxAge = edtMaxAgeConfirmed.ValueTimeSpan;
             _settings.UnconfirmedMaxAge = edtMaxAgeUnConfirmed.ValueTimeSpan;
@@ -100,23 +102,24 @@ namespace GreyListAgent.Configurator
 
             foreach (var item in lbClientList.Items)
             {
-                _settings.WhitelistClients.Add((string)item);
+                _settings.WhitelistClients.Add((string) item);
             }
 
             foreach (var item in lbIPList.Items)
             {
-                _settings.WhitelistIPs.Add((string)item);
+                _settings.WhitelistIPs.Add((string) item);
             }
             _settings.Save(ConfigFileName);
-            _log.Info("Configuration has been saved");
-    }
+            Log.Info("Configuration has been saved");
+        }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
             if (_hasChanges)
             {
                 SaveSettings();
-                MessageBox.Show("To apply changes you need to restart Exchange Transport Agent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(@"To apply changes you need to restart Exchange Transport Agent", @"Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             Close();
         }
@@ -136,9 +139,9 @@ namespace GreyListAgent.Configurator
 
         private void aAddIP_Execute(object sender, EventArgs e)
         {
-            using (var form = new IPForm())
+            using (var form = new IpForm())
             {
-                form.Text = "Add";
+                form.Text = @"Add";
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var item = form.Entry.ToString();
@@ -153,10 +156,10 @@ namespace GreyListAgent.Configurator
         {
             var index = lbIPList.SelectedIndex;
             var item = lbIPList.SelectedItem as string;
-            var args = IPEntry.Parse(item);
-            using (var form = new IPForm(args))
+            var args = IpEntry.Parse(item);
+            using (var form = new IpForm(args))
             {
-                form.Text = "Update";
+                form.Text = @"Update";
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     item = form.Entry.ToString();

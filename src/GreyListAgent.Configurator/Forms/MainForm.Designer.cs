@@ -1,4 +1,6 @@
-﻿namespace GreyListAgent.Configurator
+﻿using GreyListAgent.Configurator.Common.UI;
+
+namespace GreyListAgent.Configurator.Forms
 {
     partial class MainForm
     {
@@ -32,10 +34,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpOptions = new System.Windows.Forms.TabPage();
-            this.edtGreyListPeriod = new Zeta.TimeSpanPicker();
-            this.edtMaxAgeConfirmed = new Zeta.TimeSpanPicker();
+            this.edtGreyListPeriod = new TimeSpanPicker();
+            this.edtMaxAgeConfirmed = new TimeSpanPicker();
             this.edtNetmask = new IPAddressControlLib.IPAddressControl();
-            this.edtMaxAgeUnConfirmed = new Zeta.TimeSpanPicker();
+            this.edtMaxAgeUnConfirmed = new TimeSpanPicker();
             this.edtCleanRowCount = new System.Windows.Forms.NumericUpDown();
             this.lblIpNetmask = new System.Windows.Forms.Label();
             this.lblUnconfirmedMaxAge = new System.Windows.Forms.Label();
@@ -596,11 +598,11 @@
         private System.Windows.Forms.Label lblUnconfirmedMaxAge;
         private System.Windows.Forms.NumericUpDown edtCleanRowCount;
         private System.Windows.Forms.Label lblIpNetmask;
-        private Zeta.TimeSpanPicker edtMaxAgeUnConfirmed;
+        private TimeSpanPicker edtMaxAgeUnConfirmed;
         private IPAddressControlLib.IPAddressControl edtNetmask;
         private System.Windows.Forms.ContextMenuStrip cmIPs;
-        private Zeta.TimeSpanPicker edtGreyListPeriod;
-        private Zeta.TimeSpanPicker edtMaxAgeConfirmed;
+        private TimeSpanPicker edtGreyListPeriod;
+        private TimeSpanPicker edtMaxAgeConfirmed;
         private System.Windows.Forms.Button btnRemoveIP;
         private System.Windows.Forms.Button btnEditIP;
         private System.Windows.Forms.Button btnAddIP;

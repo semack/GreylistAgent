@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace GreyListAgent.Configurator.Utils
+namespace GreyListAgent.Configurator.Common.Helpers
 {
     public static class NetworkHelper
     {
         public static string Cidr2Decimal(int cidr)
         {
-            string[] decim = new string[4];
+            var decim = new string[4];
 
             // We go through each octagon in the decimal address
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 if (cidr > 8)
                 {
@@ -18,10 +18,10 @@ namespace GreyListAgent.Configurator.Utils
                 }
                 else
                 {
-                    int temp = 0;
-                    for (int a = 7; cidr > 0; a--, cidr--)
+                    var temp = 0;
+                    for (var a = 7; cidr > 0; a--, cidr--)
                     {
-                        temp += (int)Math.Pow(2, a);
+                        temp += (int) Math.Pow(2, a);
                     }
                     decim[i] = temp.ToString();
                 }
@@ -31,9 +31,9 @@ namespace GreyListAgent.Configurator.Utils
 
         public static int Decimal2Cidr(string decim)
         {
-            int cidr = 0;
-            string[] proof = decim.Split('.');
-            bool lessthan255 = false;
+            var cidr = 0;
+            var proof = decim.Split('.');
+            var lessthan255 = false;
 
             // We expect the string to be in the form of z.x.y.w , if there are more or less than 3 dots in there then something is wrong
             if (proof.Length != 4)
@@ -42,12 +42,12 @@ namespace GreyListAgent.Configurator.Utils
             }
 
             // Loop through every octed to process it's number
-            foreach (string oct in proof)
+            foreach (var oct in proof)
             {
                 // We need to convert the string to an integer. We use a TryParse and see if the input is really a number and it is between 0 and 255
                 int noct;
 
-                if (!Int32.TryParse(oct, out noct) || noct > 255 || noct < 0)
+                if (!int.TryParse(oct, out noct) || noct > 255 || noct < 0)
                 {
                     throw new Exception(oct + " is not a valid octet.");
                 }
@@ -79,15 +79,15 @@ namespace GreyListAgent.Configurator.Utils
                     // we have reached this point so we have this boolean here.
                     lessthan255 = true;
 
-                    int temp = 0;
-                    for (int a = 7; temp != noct; a--, cidr++)
+                    var temp = 0;
+                    for (var a = 7; temp != noct; a--, cidr++)
                     {
                         // If we have already gone 8 rounds here and not gotten our desired value then the octet is invalid and we throw an error
                         if (a < 0)
                         {
                             throw new Exception("This is not a valid netmask.");
                         }
-                        temp += (int)Math.Pow(2, a);
+                        temp += (int) Math.Pow(2, a);
                     }
                 }
             }

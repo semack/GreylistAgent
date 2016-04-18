@@ -1,82 +1,82 @@
+using System.IO;
+using System.Reflection;
+using System.Security.Cryptography;
+using log4net;
+using log4net.Config;
+using Microsoft.Exchange.Data.Transport;
+using Microsoft.Exchange.Data.Transport.Smtp;
+
 namespace GreyListAgent
 {
-    using System.IO;
-    using System.Reflection;
-    using System.Security.Cryptography;
-    using Microsoft.Exchange.Data.Transport;
-    using Microsoft.Exchange.Data.Transport.Smtp;
-    using log4net.Config;
-    using log4net;
-
     public class GreyListAgentFactory : SmtpReceiveAgentFactory
     {
-        /// <summary>
-        /// Crypto hash manager
-        /// </summary>
-        private SHA256Managed hashManager = new SHA256Managed();
+        private static readonly ILog Log = LogManager.GetLogger(Constants.AgentId);
 
         /// <summary>
-        /// GreyList Settings
+        ///     Will contain the absolute path for RelativeDataPath
         /// </summary>
-        private GreyListSettings greylistSettings;
+        private readonly string _configPath;
 
         /// <summary>
-        /// GreyList Database
+        ///     GreyList Database
         /// </summary>
-        private GreyListDatabase greylistDatabase;
+        private readonly GreyListDatabase _greylistDatabase;
 
         /// <summary>
-        /// Will contain the absolute path for RelativeDataPath
+        ///     GreyList Settings
         /// </summary>
-        private string configPath;
+        private readonly GreyListSettings _greylistSettings;
 
-        private static ILog log = LogManager.GetLogger(Constants.AgentId);
+        /// <summary>
+        ///     Crypto hash manager
+        /// </summary>
+        private readonly SHA256Managed _hashManager;
 
         public GreyListAgentFactory()
         {
             // Initialize the hashing engine
-            hashManager = new SHA256Managed();
+            _hashManager = new SHA256Managed();
 
             // Fetch the assembly, and populate paths
-            Assembly currAssembly = Assembly.GetAssembly(this.GetType());
-            string assemblyPath = Path.GetDirectoryName(currAssembly.Location);
-            this.configPath = Path.Combine(assemblyPath, Constants.RelativeConfigPath);
-            
+            var currAssembly = Assembly.GetAssembly(GetType());
+            var assemblyPath = Path.GetDirectoryName(currAssembly.Location);
+            _configPath = Path.Combine(assemblyPath, Constants.RelativeConfigPath);
+
             // Configuring Log4Net
-            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.configPath, Constants.LoggerConfigFileName)));
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(_configPath, Constants.LoggerConfigFileName)));
 
             // Load GreyList settings from file
-            this.greylistSettings = GreyListSettings.Load(Path.Combine(this.configPath, Constants.AgentConfigFileName));
+            _greylistSettings = GreyListSettings.Load(Path.Combine(_configPath, Constants.AgentConfigFileName));
 
             // Load the database. The database will end up empty if the file doesn't exist or becomes corrupted
-            this.greylistDatabase = GreyListDatabase.Load(Path.Combine(this.configPath, Constants.DatabaseFile));
+            _greylistDatabase = GreyListDatabase.Load(Path.Combine(_configPath, Constants.DatabaseFile));
         }
 
         /// <summary>
-        /// Saves the GreyList Database on close
+        ///     Saves the GreyList Database on close
         /// </summary>
         public override void Close()
         {
             if (!Directory.Exists(Constants.RelativeConfigPath))
                 Directory.CreateDirectory(Constants.RelativeConfigPath);
 
-            this.greylistDatabase.Save(Path.Combine(this.configPath, Constants.DatabaseFile));
+            _greylistDatabase.Save(Path.Combine(_configPath, Constants.DatabaseFile));
         }
 
         /// <summary>
-        /// Create a new GreyList Agent.
+        ///     Create a new GreyList Agent.
         /// </summary>
         /// <param name="server">Exchange Edge Transport server.</param>
         /// <returns>A new Transport Agent.</returns>
         public override SmtpReceiveAgent CreateAgent(SmtpServer server)
         {
-            XmlConfigurator.Configure(new FileInfo(Path.Combine(this.configPath, Constants.LoggerConfigFileName)));
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(_configPath, Constants.LoggerConfigFileName)));
             return new GreyListAgent(
-                                     this.greylistSettings,
-                                     this.greylistDatabase,
-                                     this.hashManager,
-                                     server,
-                                     log);
+                _greylistSettings,
+                _greylistDatabase,
+                _hashManager,
+                server,
+                Log);
         }
     }
 }

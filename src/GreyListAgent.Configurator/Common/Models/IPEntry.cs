@@ -1,37 +1,13 @@
-﻿using NetTools;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
+using NetTools;
 
-namespace GreyListAgent.Configurator.Models
+namespace GreyListAgent.Configurator.Common.Models
 {
-    public class IPEntry
+    public class IpEntry
     {
-        public IPAddress IpAddress { get; private set; }
-        public int? Cidr { get; private set; }
-
-        public static IPEntry Parse(string source)
-        {
-            IPAddress ip = null;
-            int? cidr = null;
-            string[] separators = new string[] { "/" };
-            string[] items = source.Trim().Split(separators, StringSplitOptions.None);
-
-            if (items.Count() > 0)
-            {
-                ip = IPAddress.Parse(items[0]);
-                if (items.Count() > 1)
-                {
-                   cidr = int.Parse(items[1]);
-                }
-            }
-            else
-                throw new ArgumentException();
-
-            return new IPEntry(ip, cidr);
-        }
-
-        public IPEntry(IPAddress ipAddress, int? cidr = null)
+        public IpEntry(IPAddress ipAddress, int? cidr = null)
         {
             IpAddress = ipAddress;
 
@@ -40,14 +16,38 @@ namespace GreyListAgent.Configurator.Models
                 var value = ToString(IpAddress, cidr);
                 IPAddressRange.Parse(value);
             }
-            
+
             Cidr = cidr;
+        }
+
+        public IPAddress IpAddress { get; }
+        public int? Cidr { get; }
+
+        public static IpEntry Parse(string source)
+        {
+            IPAddress ip;
+            int? cidr = null;
+            string[] separators = {"/"};
+            var items = source.Trim().Split(separators, StringSplitOptions.None);
+
+            if (items.Any())
+            {
+                ip = IPAddress.Parse(items[0]);
+                if (items.Length > 1)
+                {
+                    cidr = int.Parse(items[1]);
+                }
+            }
+            else
+                throw new ArgumentException();
+
+            return new IpEntry(ip, cidr);
         }
 
         private string ToString(IPAddress ipAddress, int? cidr = null)
         {
             if (cidr != null)
-                return string.Format("{0}/{1}", ipAddress, cidr);
+                return $"{ipAddress}/{cidr}";
             return ipAddress.ToString();
         }
 

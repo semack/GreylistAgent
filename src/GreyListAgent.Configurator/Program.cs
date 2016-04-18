@@ -1,20 +1,21 @@
-﻿using GreyListAgent.Configurator.Configuration;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using GreyListAgent.Configurator.Common;
+using GreyListAgent.Configurator.Forms;
 
 namespace GreyListAgent.Configurator
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Form form = null;
-            string[] asArgv = Environment.GetCommandLineArgs();
+            var asArgv = Environment.GetCommandLineArgs();
 
             if (asArgv.Contains("-register"))
                 ControlPanelControl.Register();

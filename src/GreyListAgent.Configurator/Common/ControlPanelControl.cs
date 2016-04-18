@@ -1,9 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
-namespace GreyListAgent.Configurator.Configuration
+namespace GreyListAgent.Configurator.Common
 {
     // https://msdn.microsoft.com/en-us/library/hh127450(v=vs.85).aspx
 
@@ -13,7 +13,7 @@ namespace GreyListAgent.Configurator.Configuration
         {
             get
             {
-                Assembly assembly = Assembly.GetExecutingAssembly();
+                var assembly = Assembly.GetExecutingAssembly();
                 return assembly.GetType().GUID;
             }
         }
@@ -22,7 +22,8 @@ namespace GreyListAgent.Configurator.Configuration
         {
             get
             {
-                var keyPath = string.Format("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace\\{0}{1}{2}", "{", AssemblyGuid, "}");
+                var keyPath =
+                    $"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace\\{"{"}{AssemblyGuid}{"}"}";
                 return keyPath;
             }
         }
@@ -31,7 +32,7 @@ namespace GreyListAgent.Configurator.Configuration
         {
             get
             {
-                var keyPath = string.Format("CLSID\\{0}{1}{2}", "{", AssemblyGuid, "}");
+                var keyPath = $"CLSID\\{"{"}{AssemblyGuid}{"}"}";
                 return keyPath;
             }
         }
@@ -41,27 +42,37 @@ namespace GreyListAgent.Configurator.Configuration
             Unregister();
 
             var key = Registry.LocalMachine.CreateSubKey(LocalMachineKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            key.SetValue(null, "Exchange Greylist Configuration", RegistryValueKind.String);
-            key.Close();
+            if (key != null)
+            {
+                key.SetValue(null, "Exchange Greylist Configuration", RegistryValueKind.String);
+                key.Close();
+            }
 
             key = Registry.ClassesRoot.CreateSubKey(ClassesRootKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            key.SetValue(null, "Exchange Greylist Configuration", RegistryValueKind.String);
-            key.SetValue("InfoTip", "Configuration utility of Greylist Agent for Microsoft Exchange Server", RegistryValueKind.String);
-            key.SetValue("System.ApplicationName", "GreyList.Configuration", RegistryValueKind.String);
-            key.SetValue("System.ControlPanel.Category", "3,8", RegistryValueKind.String);
-            key.Close();
+            if (key != null)
+            {
+                key.SetValue(null, "Exchange Greylist Configuration", RegistryValueKind.String);
+                key.SetValue("InfoTip", "Configuration utility of Greylist Agent for Microsoft Exchange Server",
+                    RegistryValueKind.String);
+                key.SetValue("System.ApplicationName", "GreyList.Configuration", RegistryValueKind.String);
+                key.SetValue("System.ControlPanel.Category", "3,8", RegistryValueKind.String);
+                key.Close();
 
-            var keyPath = string.Format("{0}\\DefaultIcon", ClassesRootKey);
-            var exeFullPath = string.Format("{0}",  Application.ExecutablePath);
+                var keyPath = $"{ClassesRootKey}\\DefaultIcon";
+                var exeFullPath = $"{Application.ExecutablePath}";
 
-            key = Registry.ClassesRoot.CreateSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            key.SetValue(null, string.Format("{0}, {1}", exeFullPath, -2), RegistryValueKind.String);
-            key.Close();
+                key = Registry.ClassesRoot.CreateSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+                if (key != null)
+                {
+                    key.SetValue(null, $"{exeFullPath}, {-2}", RegistryValueKind.String);
+                    key.Close();
 
-            keyPath = string.Format("{0}\\Shell\\Open\\Command", ClassesRootKey);
-            key = Registry.ClassesRoot.CreateSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
-            key.SetValue(null, exeFullPath, RegistryValueKind.ExpandString);
-            key.Close();
+                    keyPath = $"{ClassesRootKey}\\Shell\\Open\\Command";
+                }
+                key = Registry.ClassesRoot.CreateSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+                key?.SetValue(null, exeFullPath, RegistryValueKind.ExpandString);
+                key?.Close();            
+            }     
         }
 
         public static void Unregister()

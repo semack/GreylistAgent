@@ -1,4 +1,4 @@
-﻿namespace GreyListAgent.Configurator
+﻿namespace GreyListAgent.Configurator.Forms
 {
     partial class ClientForm
     {
