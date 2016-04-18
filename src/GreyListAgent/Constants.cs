@@ -7,8 +7,9 @@ namespace GreyListAgent
 {
     public static class Constants
     {
-        public const string AgentId = @"Agent";
-        public const string ConfiguratorId = @"Configurator";
+        public const string AgentId = "Agent";
+
+        public const string ConfiguratorId = "Configurator";
         /// <summary>
         /// Directory for storing the data relative to the DLL
         /// </summary>
