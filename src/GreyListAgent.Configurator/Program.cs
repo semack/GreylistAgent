@@ -19,9 +19,9 @@ namespace GreyListAgent.Configurator
             string[] asArgv = Environment.GetCommandLineArgs();
 
             if (asArgv.Contains("-register"))
-                CplControl.Register();
+                ControlPanelControl.Register();
             else if (asArgv.Contains("-unregister"))
-                CplControl.Unregister();
+                ControlPanelControl.Unregister();
             else
             {
                 Application.EnableVisualStyles();

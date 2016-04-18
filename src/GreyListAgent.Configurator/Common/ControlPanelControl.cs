@@ -7,7 +7,7 @@ namespace GreyListAgent.Configurator.Configuration
 {
     // https://msdn.microsoft.com/en-us/library/hh127450(v=vs.85).aspx
 
-    public static class CplControl
+    public static class ControlPanelControl
     {
         private static Guid AssemblyGuid
         {

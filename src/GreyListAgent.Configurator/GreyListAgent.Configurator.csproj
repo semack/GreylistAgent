@@ -72,44 +72,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GreyListAgent\Constants.cs">
-      <Link>Constants.cs</Link>
+      <Link>Common\Imports\Constants.cs</Link>
     </Compile>
     <Compile Include="..\GreyListAgent\GreyListSettings.cs">
-      <Link>GreyListSettings.cs</Link>
+      <Link>Common\Imports\GreyListSettings.cs</Link>
     </Compile>
-    <Compile Include="ClientForm.cs">
+    <Compile Include="Forms\ClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClientForm.Designer.cs">
+    <Compile Include="Forms\ClientForm.Designer.cs">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\CplControl.cs" />
-    <Compile Include="IPForm.cs">
+    <Compile Include="Common\ControlPanelControl.cs" />
+    <Compile Include="Forms\IPForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IPForm.Designer.cs">
+    <Compile Include="Forms\IPForm.Designer.cs">
       <DependentUpon>IPForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\IPEntry.cs" />
+    <Compile Include="Common\Models\IPEntry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\TimeSpanPicker.cs">
+    <Compile Include="Common\UI\TimeSpanPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Utils\NetworkHelper.cs" />
-    <EmbeddedResource Include="ClientForm.resx">
+    <Compile Include="Common\Helpers\NetworkHelper.cs" />
+    <EmbeddedResource Include="Forms\ClientForm.resx">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IPForm.resx">
+    <EmbeddedResource Include="Forms\IPForm.resx">
       <DependentUpon>IPForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -122,7 +122,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\TimeSpanPicker.resx">
+    <EmbeddedResource Include="Common\UI\TimeSpanPicker.resx">
       <DependentUpon>TimeSpanPicker.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="..\GreyListAgent\Configs\Agent.config">
