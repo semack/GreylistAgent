@@ -259,75 +259,89 @@ namespace GreyListAgent.Configurator.Common.UI
             if (_activeBox > 0)
             {
                 var keyData = e.KeyData;
-                if (e.KeyData == Keys.Left)
+                switch (e.KeyData)
                 {
-                    if (_activeBox > 1)
-                    {
-                        _activeBox--;
+                    case Keys.Left:
+                        if (_activeBox > 1)
+                        {
+                            _activeBox--;
+                            Refresh();
+                        }
+                        else if (_activeBox == 1)
+                        {
+                            _activeBox = 4;
+                            Refresh();
+                        }
+                        break;
+                    case Keys.Right:
+                        if (_activeBox < 4)
+                        {
+                            _activeBox++;
+                            Refresh();
+                        }
+                        else if (_activeBox == 4)
+                        {
+                            _activeBox = 1;
+                            Refresh();
+                        }
+                        break;
+                    case Keys.Up:
+                        AddOneToActiveBox();
+                        break;
+                    default:
+                        if ((e.KeyData == Keys.Down) && (_number[_activeBox - 1] > 0))
+                        {
+                            _number[_activeBox - 1]--;
+                            Refresh();
+                        }
+                        break;
+                }
+                switch (keyData)
+                {
+                    case Keys.D0:
+                    case Keys.D1:
+                    case Keys.D2:
+                    case Keys.D3:
+                    case Keys.D4:
+                    case Keys.D5:
+                    case Keys.D6:
+                    case Keys.D7:
+                    case Keys.D8:
+                    case Keys.D9:
+                        _number[_activeBox - 1] =
+                            Convert.ToInt32(_number[_activeBox - 1].ToString("00").Substring(1, 1) +
+                                            Convert.ToInt32(keyData.ToString().Substring(1, 1)));
                         Refresh();
-                    }
-                    else if (_activeBox == 1)
-                    {
-                        _activeBox = 4;
+                        hasChanged = true;
+                        break;
+                    case Keys.NumPad0:
+                    case Keys.NumPad1:
+                    case Keys.NumPad2:
+                    case Keys.NumPad3:
+                    case Keys.NumPad4:
+                    case Keys.NumPad5:
+                    case Keys.NumPad6:
+                    case Keys.NumPad7:
+                    case Keys.NumPad8:
+                    case Keys.NumPad9:
+                        _number[_activeBox - 1] =
+                            Convert.ToInt32(_number[_activeBox - 1].ToString("00").Substring(1, 1) +
+                                            Convert.ToInt32(keyData.ToString().Substring(6, 1)));
                         Refresh();
-                    }
-                }
-                else if (e.KeyData == Keys.Right)
-                {
-                    if (_activeBox < 4)
-                    {
-                        _activeBox++;
+                        hasChanged = true;
+                        break;
+                    case Keys.Delete:
+                        _number[_activeBox - 1] = 0;
                         Refresh();
-                    }
-                    else if (_activeBox == 4)
-                    {
-                        _activeBox = 1;
+                        break;
+                    case Keys.Back:
+                        _number[_activeBox - 1] = 0;
+                        if (_activeBox > 1)
+                        {
+                            _activeBox--;
+                        }
                         Refresh();
-                    }
-                }
-                else if (e.KeyData == Keys.Up)
-                {
-                    AddOneToActiveBox();
-                }
-                else if ((e.KeyData == Keys.Down) && (_number[_activeBox - 1] > 0))
-                {
-                    _number[_activeBox - 1]--;
-                    Refresh();
-                }
-                if ((Keys.D0 == keyData) || (Keys.D1 == keyData) || (Keys.D2 == keyData) || (Keys.D3 == keyData) ||
-                    (Keys.D4 == keyData) || (Keys.D5 == keyData) || (Keys.D6 == keyData) || (Keys.D7 == keyData) ||
-                    (Keys.D8 == keyData) || (Keys.D9 == keyData))
-                {
-                    _number[_activeBox - 1] =
-                        Convert.ToInt32(_number[_activeBox - 1].ToString("00").Substring(1, 1) +
-                                        Convert.ToInt32(keyData.ToString().Substring(1, 1)));
-                    Refresh();
-                    hasChanged = true;
-                }
-                else if ((Keys.NumPad0 == keyData) || (Keys.NumPad1 == keyData) || (Keys.NumPad2 == keyData) ||
-                         (Keys.NumPad3 == keyData) || (Keys.NumPad4 == keyData) || (Keys.NumPad5 == keyData) ||
-                         (Keys.NumPad6 == keyData) || (Keys.NumPad7 == keyData) || (Keys.NumPad8 == keyData) ||
-                         (Keys.NumPad9 == keyData))
-                {
-                    _number[_activeBox - 1] =
-                        Convert.ToInt32(_number[_activeBox - 1].ToString("00").Substring(1, 1) +
-                                        Convert.ToInt32(keyData.ToString().Substring(6, 1)));
-                    Refresh();
-                    hasChanged = true;
-                }
-                else if (keyData == Keys.Delete)
-                {
-                    _number[_activeBox - 1] = 0;
-                    Refresh();
-                }
-                else if (keyData == Keys.Back)
-                {
-                    _number[_activeBox - 1] = 0;
-                    if (_activeBox > 1)
-                    {
-                        _activeBox--;
-                    }
-                    Refresh();
+                        break;
                 }
 
                 if (hasChanged)
