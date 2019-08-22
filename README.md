@@ -16,14 +16,3 @@ Features
 2. Configurable netmask application to deal with most mail clusters automatically
 3. Whitelisting via rDNS (client) and IP address
 4. Logging transactions for debugging purposes
-
-
-Install Instructions:
------
-https://kill-9.me/543/exchange-greylist-transport-agent
-
-
-Contact
------
-- James DeVincentis
-- james@hexhost.net
